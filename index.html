@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mon Autonomie">
+<meta name="theme-color" content="#4A90D9">
+<title>Mon Autonomie</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#4A90D9;--pl:#EBF4FF;--p2:#2471B8;
+  --green:#27AE60;--gl:#E8F8F0;
+  --amber:#F39C12;--al:#FEF5E7;
+  --coral:#E74C3C;--crl:#FDEDEC;
+  --purple:#8E44AD;--prl:#F5EEF8;
+  --bg:#F0F4F8;--card:#fff;
+  --text:#1a2332;--t2:#6b7a8d;--t3:#aab4c0;
+  --brd:rgba(74,144,217,0.13);
+  --r:16px;--rsm:11px;--rlg:20px;
+  --sh:0 2px 12px rgba(74,144,217,0.09);
+  --shl:0 4px 24px rgba(74,144,217,0.16);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text)}
+.screen{display:none;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+.screen.active{display:flex;overflow:hidden}
+#sc-ob.screen.active{overflow-y:auto}
+
+/* === ONBOARDING === */
+#sc-ob{background:linear-gradient(160deg,#dbeeff,#f0f4f8);align-items:center;justify-content:flex-start;overflow-y:auto;padding:16px 20px 40px}
+.ob-in{width:100%;max-width:360px;margin:0 auto;text-align:center;padding-bottom:10px}
+.ob-logo{font-size:48px;display:block;margin-bottom:6px;animation:float 3s ease-in-out infinite}
+.ob-title{font-size:24px;font-weight:900;color:var(--p);margin-bottom:3px}
+.ob-sub{font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.4}
+.fl{text-align:left;margin-bottom:12px}
+.fl label{font-size:13px;font-weight:800;color:var(--t2);margin-bottom:6px;display:block}
+.fi{width:100%;padding:13px 16px;border:2px solid var(--brd);border-radius:var(--r);font-size:16px;font-family:'Nunito',sans-serif;background:white;color:var(--text);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--p)}
+.age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.age-opt{background:white;border:2px solid var(--brd);border-radius:var(--rsm);padding:10px 4px;text-align:center;cursor:pointer;transition:all .2s}
+.age-opt.sel{border-color:var(--p);background:var(--pl)}
+.ao-r{font-size:15px;font-weight:900;color:var(--text)}
+.ao-l{font-size:10px;color:var(--t2);margin-top:1px}
+.btn{width:100%;padding:14px;background:var(--p);color:white;border:none;border-radius:var(--r);font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;transition:transform .15s,opacity .2s;margin-top:12px}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.sec{background:white;color:var(--t2);border:1.5px solid var(--brd);font-size:13px;padding:11px;margin-top:8px}
+
+/* === ANIMAL CHOICE === */
+#sc-anim{overflow-y:auto;background:var(--bg);padding:20px}
+.ac-in{max-width:360px;margin:0 auto}
+.pt{font-size:22px;font-weight:900;margin-bottom:4px}
+.ps{font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.5}
+.ag{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;overflow-y:auto;max-height:65vh}
+.ac{background:transparent;border:2.5px solid transparent;border-radius:var(--r);padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:none}
+.ac.sel{border-color:var(--p);background:rgba(255,255,255,.72)}
+.ac .ae{font-size:42px;margin-bottom:5px;display:block}
+.ac .an{font-size:15px;font-weight:900;margin-top:3px}
+.ac .af{font-size:10px;color:var(--t2);margin-top:2px}
+.animal-png{display:block;object-fit:contain;max-width:100%;filter:drop-shadow(0 5px 7px rgba(27,48,72,.14))}
+.portrait-frame{position:relative;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(27,48,72,.09)}.portrait-frame>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}.portrait-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+
+/* === MAIN APP === */
+#sc-app{background:var(--bg)}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 90px}
+.tbar{display:flex;background:white;border-top:1px solid var(--brd);padding:5px 0 max(5px,env(safe-area-inset-bottom));flex-shrink:0}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0;transition:transform .15s}
+.ti:active{transform:scale(.9)}
+.ti-ic{font-size:20px}
+.ti-lb{font-size:9px;font-weight:800;color:var(--t3)}
+.ti.on .ti-lb{color:var(--p)}
+.ti-dot{width:4px;height:4px;border-radius:50%;background:var(--p);opacity:0}
+.ti.on .ti-dot{opacity:1}
+.new-login{display:none;position:fixed;right:12px;bottom:68px;z-index:40;border:0;background:rgba(255,255,255,.94);color:var(--t2);border-radius:12px;padding:6px 9px;font:800 9px 'Nunito',sans-serif;box-shadow:0 2px 9px rgba(27,48,72,.12);cursor:pointer}.new-login:active{transform:scale(.96)}
+.tp{display:none}.tp.on{display:block}
+
+/* === MISC ELEMENTS === */
+.sec{font-size:11px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 8px}
+.sec:first-child{margin-top:0}
+.card{background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px}
+
+/* === GREET HERO === */
+.gh{border-radius:var(--rlg);padding:16px;margin-bottom:12px;color:white;display:flex;align-items:center;gap:12px;overflow:hidden;position:relative;transition:background .5s}
+.gh-anim{font-size:52px;flex-shrink:0;animation:float 3s ease-in-out infinite;line-height:1;position:relative;z-index:1}
+.gh-r{flex:1;position:relative;z-index:1}
+.gh-hi{font-size:17px;font-weight:900}
+.gh-st{font-size:11px;opacity:.8;margin-top:1px}
+.xb{background:rgba(255,255,255,.25);border-radius:20px;height:7px;margin:8px 0 3px;overflow:hidden}
+.xf{background:white;height:100%;border-radius:20px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+.xl{display:flex;justify-content:space-between;font-size:10px;opacity:.8}
+
+/* === WEATHER === */
+.weather-card{background:white;border-radius:var(--r);padding:13px 14px;box-shadow:var(--sh);margin-bottom:10px}
+.wth-title{font-size:12px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.wth-row{display:flex;justify-content:space-around}
+.wth-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 8px;border-radius:12px;border:2px solid transparent;transition:all .2s;flex:1}
+.wth-btn.sel{border-color:var(--p);background:var(--pl)}
+.wth-ico{font-size:28px}
+.wth-lbl{font-size:9px;font-weight:800;color:var(--t2)}
+
+/* === MOOD === */
+.mood-card{background:white;border-radius:var(--r);padding:13px 14px;box-shadow:var(--sh);margin-bottom:10px}
+.mood-title{font-size:12px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.mood-row{display:flex;justify-content:space-around}
+.mood-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 2px;border-radius:10px;border:2px solid transparent;transition:all .2s}
+.mood-btn.sel{border-color:var(--p);background:var(--pl)}
+.mood-ico{font-size:26px}
+.mood-lbl{font-size:9px;font-weight:700;color:var(--t2);text-align:center}
+
+/* === STREAK ROW === */
+.sr{display:flex;gap:8px;margin-bottom:10px}
+.sb{flex:1;background:white;border-radius:var(--rsm);padding:10px 10px;box-shadow:var(--sh);display:flex;align-items:center;gap:7px}
+.si{font-size:22px}
+.sv{font-size:17px;font-weight:900}
+.sl{font-size:9px;color:var(--t2);font-weight:700}
+
+/* === TASK CARDS === */
+.tc{background:white;border-radius:var(--rsm);padding:11px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:var(--sh);transition:transform .15s,opacity .2s}
+.tc:active{transform:scale(.98)}
+.tc.done{opacity:.4}
+.tc.done .tn{text-decoration:line-through}
+.tc.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+.tp-box{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
+.tb2{flex:1;min-width:0}
+.tn{font-size:13px;font-weight:800;line-height:1.3}
+.tcat{font-size:10px;color:var(--t2);margin-top:1px}
+.tpts{background:var(--pl);color:var(--p);font-size:10px;font-weight:900;padding:3px 7px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;gap:3px}
+.tcb{width:26px;height:26px;border-radius:8px;border:2.5px solid #cdd5df;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tcb.on{background:var(--p);border-color:var(--p)}
+.tck{display:none}
+.tcb.on .tck{display:block;width:6px;height:10px;border:2.5px solid white;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px)}
+
+/* === PLANNING VISUEL === */
+.plan-week{overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.plan-week::-webkit-scrollbar{display:none}
+.plan-grid{display:grid;grid-template-columns:repeat(7,minmax(90px,1fr));gap:8px;min-width:650px}
+.plan-col{background:white;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:2px solid transparent;transition:border-color .2s}
+.plan-col.today{border-color:var(--p)}
+.plan-col-hd{padding:8px 6px;text-align:center;border-bottom:1px solid #f0f2f5}
+.plan-col-day{font-size:11px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
+.plan-col-ico{font-size:20px;margin:3px 0 2px}
+.plan-col-today-badge{font-size:8px;font-weight:900;color:var(--p);background:var(--pl);padding:1px 5px;border-radius:6px;display:inline-block;margin-top:2px}
+.plan-slot-hd{font-size:9px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;padding:6px 6px 4px;display:flex;align-items:center;gap:3px}
+.plan-cards-area{padding:0 5px 8px;display:flex;flex-direction:column;gap:5px;min-height:60px}
+.plan-tile{border-radius:10px;padding:6px 5px;text-align:center;cursor:pointer;transition:transform .15s;border:1.5px solid transparent}
+.plan-tile:active{transform:scale(.95)}
+.plan-tile-ico{font-size:22px;display:block;margin-bottom:3px}
+.plan-tile-txt{font-size:9px;font-weight:800;color:var(--text);line-height:1.2}
+.plan-tile-edit{font-size:8px;color:var(--p);font-weight:800;margin-top:2px;display:block}
+.plan-divider{height:1px;background:#f0f2f5;margin:2px 0}
+
+/* === ANIMAL PAGE === */
+.ah{border-radius:var(--rlg);padding:20px;text-align:center;box-shadow:var(--shl);margin-bottom:12px;position:relative;overflow:hidden;transition:background .5s}
+.ah-bg-txt{position:absolute;inset:0;font-size:110px;display:flex;align-items:center;justify-content:center;opacity:.05;pointer-events:none}
+.ah-main{font-size:84px;display:block;animation:float 3s ease-in-out infinite;position:relative;z-index:1}
+.ah-acc{font-size:22px;margin-top:4px;min-height:24px;position:relative;z-index:1}
+.ah-nm{font-size:20px;font-weight:900;margin-top:6px}
+.ah-st{font-size:12px;color:var(--t2);margin-top:2px}
+.friend-portrait{display:flex;justify-content:center;align-items:center;min-height:228px}.friend-outfit{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.92);color:var(--text);border-radius:999px;padding:7px 12px;margin-top:8px;font-size:11px;font-weight:900;box-shadow:0 3px 10px rgba(27,48,72,.12)}.friend-outfit-label{color:var(--t2);font-weight:800}
+.st2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stb{background:white;border-radius:var(--rsm);padding:12px;text-align:center;box-shadow:var(--sh)}
+.stn{font-size:26px;font-weight:900;color:var(--p)}
+.stl{font-size:10px;color:var(--t2);font-weight:700;margin-top:1px}
+.et{background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px}
+.el{font-size:11px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.es{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.est{text-align:center;flex:1}
+.ei{font-size:20px;transition:transform .3s}
+.est.cur .ei{transform:scale(1.35)}
+.est.lk{opacity:.25}
+.exl{font-size:9px;color:var(--t2);font-weight:700;margin-top:2px}
+.ea{color:var(--t3);font-size:11px;flex-shrink:0}
+.pb{background:var(--pl);border-radius:20px;height:9px;overflow:hidden}
+.pf{background:var(--p);height:100%;border-radius:20px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+.pr{display:flex;justify-content:space-between;font-size:10px;color:var(--t2);font-weight:700;margin-top:4px}
+
+/* === BOUTIQUE === */
+.shop-section{background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px}
+.shop-title{font-size:13px;font-weight:900;margin-bottom:3px}
+.shop-sub{font-size:11px;color:var(--t2);margin-bottom:12px}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.shop-item{border:2px solid var(--brd);border-radius:var(--rsm);padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfd}
+.shop-item.owned{border-color:var(--green);background:var(--gl)}
+.shop-item.equipped{border-color:var(--p);background:var(--pl)}
+.shop-item.locked{opacity:.55;cursor:not-allowed}
+.shop-ico{font-size:28px;margin-bottom:4px}
+.shop-name{font-size:10px;font-weight:800;color:var(--text)}
+.shop-price{font-size:10px;font-weight:900;color:var(--p);margin-top:2px}
+.shop-price.owned{color:var(--green)}
+.shop-price.equipped{color:var(--p)}
+.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bg-opt{border:3px solid transparent;border-radius:var(--rsm);height:64px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;overflow:hidden}
+.bg-opt.owned{opacity:1}
+.bg-opt.locked{opacity:.4;cursor:not-allowed}
+.bg-opt.equipped{border-color:var(--p);box-shadow:0 0 0 2px var(--p)}
+.bg-lock{position:absolute;top:3px;right:4px;font-size:11px}
+
+/* === AI ENCOURAGEMENTS === */
+.ai-card{background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px}
+.ai-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ai-ic{font-size:26px}
+.ai-title{font-size:14px;font-weight:900}
+.ai-sub{font-size:11px;color:var(--t2);margin-top:1px}
+.encour-list{display:flex;flex-direction:column;gap:8px}
+.encour-item{background:var(--pl);border-radius:var(--rsm);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.encour-txt{font-size:13px;font-weight:700;flex:1;line-height:1.4}
+.speak-btn{width:34px;height:34px;border-radius:50%;background:var(--p);border:none;cursor:pointer;font-size:16px;flex-shrink:0;transition:transform .15s;display:flex;align-items:center;justify-content:center}
+.speak-btn:active{transform:scale(.92)}
+.speak-btn.speaking{background:var(--coral);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.ai-btn{width:100%;padding:12px;background:var(--p);color:white;border:none;border-radius:var(--rsm);font-size:13px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .2s}
+.ai-btn:disabled{opacity:.5;cursor:not-allowed}
+.ai-loading{display:flex;gap:5px;align-items:center;justify-content:center;padding:14px}
+.ai-dot{width:8px;height:8px;background:var(--p);border-radius:50%;animation:bdot 1.2s ease infinite}
+.ai-dot:nth-child(2){animation-delay:.2s}
+.ai-dot:nth-child(3){animation-delay:.4s}
+@keyframes bdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+
+/* === DISCOVER === */
+.disc-card{background:white;border-radius:var(--r);padding:13px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);cursor:pointer;transition:transform .15s}
+.disc-card:active{transform:scale(.98)}
+.disc-ico{font-size:30px;width:44px;text-align:center;flex-shrink:0}
+.disc-b{flex:1}
+.disc-t{font-size:13px;font-weight:800}
+.disc-s{font-size:11px;color:var(--t2);margin-top:1px;line-height:1.4}
+.disc-tag{font-size:10px;font-weight:800;padding:2px 8px;border-radius:8px;margin-top:4px;display:inline-block}
+.disc-arr{font-size:16px;color:var(--t3);flex-shrink:0}
+.vc{background:white;border-radius:var(--rsm);padding:11px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);cursor:pointer;transition:transform .15s}
+.vc:active{transform:scale(.98)}
+.vt{width:56px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:var(--crl)}
+.vb{flex:1;min-width:0}
+.vtit{font-size:12px;font-weight:800;line-height:1.3}
+.vch{font-size:10px;color:var(--t2);margin-top:1px}
+.vtg{font-size:9px;font-weight:800;padding:2px 7px;border-radius:7px;margin-top:3px;display:inline-block}
+
+/* === SUB PAGES === */
+.sub-page{display:none;flex-direction:column;position:fixed;inset:0;z-index:200;background:var(--bg)}
+.sub-page.open{display:flex}
+.sub-hd{background:white;padding:max(14px,env(safe-area-inset-top)) 14px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.sub-back{font-size:22px;cursor:pointer;padding:4px 8px 4px 0;background:none;border:none;font-family:'Nunito',sans-serif;line-height:1}
+.sub-title{font-size:16px;font-weight:900}
+.sub-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px}
+.color-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.color-card{background:white;border-radius:var(--r);padding:14px;text-align:center;box-shadow:var(--sh);cursor:pointer;transition:transform .15s}
+.color-card:active{transform:scale(.97)}
+.color-ico{font-size:48px;margin-bottom:8px}
+.color-name{font-size:13px;font-weight:800}
+.color-hint{font-size:10px;color:var(--t2);margin-top:2px}
+.game-card{background:white;border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--sh)}
+.game-type{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:8px;margin-bottom:6px}
+.game-name{font-size:15px;font-weight:900;margin-bottom:4px}
+.game-desc{font-size:12px;color:var(--t2);line-height:1.5}
+.tip-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.tip-num{width:26px;height:26px;border-radius:50%;background:var(--p);color:white;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.tip-txt{font-size:13px;line-height:1.55;font-weight:600}
+.book-list{list-style:none;margin-bottom:12px}
+.book-item{display:flex;align-items:center;gap:10px;background:white;border-radius:var(--rsm);padding:11px 12px;margin-bottom:8px;box-shadow:var(--sh)}
+.book-ico{font-size:20px;flex-shrink:0}
+.book-title{font-size:13px;font-weight:800;flex:1}
+.book-del{background:none;border:none;font-size:16px;cursor:pointer;color:var(--t3);padding:4px}
+.book-add{display:flex;gap:8px;margin-top:4px}
+.book-add input{flex:1;padding:11px 12px;border:2px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:'Nunito',sans-serif;outline:none}
+.book-add input:focus{border-color:var(--p)}
+.book-add button{padding:11px 16px;background:var(--p);color:white;border:none;border-radius:var(--rsm);font-size:13px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer}
+.build-card{background:white;border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--sh)}
+.build-ico{font-size:36px;margin-bottom:8px}
+.build-name{font-size:15px;font-weight:900;margin-bottom:4px}
+.build-desc{font-size:12px;color:var(--t2);line-height:1.55}
+.build-mat{font-size:11px;font-weight:700;color:var(--p);margin-top:6px}
+
+/* === VOCAB === */
+.voc-cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.voc-cats::-webkit-scrollbar{display:none}
+.voc-cat-btn{flex-shrink:0;padding:7px 12px;border-radius:20px;border:2px solid var(--brd);background:white;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--t2);cursor:pointer;transition:all .2s}
+.voc-cat-btn.on{background:var(--p);color:white;border-color:var(--p)}
+.voc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.voc-card{background:white;border-radius:var(--r);padding:14px 10px;text-align:center;box-shadow:var(--sh);cursor:pointer;transition:transform .15s;position:relative;border:2px solid transparent}
+.voc-card:active{transform:scale(.96)}
+.voc-card.heard{border-color:var(--p);background:var(--pl)}
+.voc-big{font-size:44px;margin-bottom:7px;display:block;line-height:1}
+.voc-word{font-size:13px;font-weight:900;margin-bottom:2px}
+.voc-sub{font-size:10px;color:var(--t2);line-height:1.3}
+.voc-spk{position:absolute;top:7px;right:7px;width:26px;height:26px;border-radius:50%;background:var(--pl);border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.voc-spk.sp{background:var(--p)}
+.voc-prog{background:white;border-radius:var(--r);padding:11px 14px;box-shadow:var(--sh);margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.voc-pb{flex:1;background:var(--pl);border-radius:20px;height:8px;overflow:hidden}
+.voc-pf{background:var(--p);height:100%;border-radius:20px;transition:width .5s}
+.voc-pt{font-size:12px;font-weight:900;color:var(--p);white-space:nowrap}
+
+/* === TIPS === */
+.tip-c{border-radius:var(--rsm);padding:14px;margin-bottom:10px}
+.tip-c.emotion{background:var(--prl);border-left:4px solid var(--purple)}
+.tip-c.hygiene{background:var(--gl);border-left:4px solid var(--green)}
+.tip-c.social{background:var(--crl);border-left:4px solid var(--coral)}
+.tip-c.orga{background:var(--al);border-left:4px solid var(--amber)}
+.tip-ico{font-size:28px;margin-bottom:7px}
+.tip-tg{display:inline-block;font-size:11px;font-weight:800;padding:2px 9px;border-radius:10px;margin-bottom:7px}
+.tip-tg.emotion{background:#C39BD3;color:#4A235A}
+.tip-tg.hygiene{background:#82E0AA;color:#1D6A39}
+.tip-tg.social{background:#F1948A;color:#922B21}
+.tip-tg.orga{background:#F9C74F;color:#7D6608}
+.tip-txt{font-size:14px;line-height:1.6;font-weight:600}
+.tipnav{display:flex;justify-content:space-between;align-items:center;margin-top:11px}
+.tnb{background:none;border:none;font-size:13px;font-weight:800;color:var(--p);cursor:pointer;padding:5px 0;font-family:'Nunito',sans-serif}
+
+/* === TOAST & LU === */
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--text);color:white;padding:10px 18px;border-radius:30px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.lu{position:fixed;inset:0;background:rgba(74,144,217,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s;padding:24px;text-align:center}
+.lu.show{opacity:1;pointer-events:all}
+.lu-a{font-size:96px;animation:bigb .5s ease infinite alternate}
+@keyframes bigb{from{transform:scale(1) rotate(-4deg)}to{transform:scale(1.1) rotate(4deg)}}
+.lu-t{font-size:26px;font-weight:900;color:white;margin-top:14px}
+.lu-s{font-size:14px;color:rgba(255,255,255,.85);margin-top:7px;line-height:1.5}
+.lu-btn{margin-top:22px;padding:14px 36px;background:white;color:var(--p);border:none;border-radius:var(--r);font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.bg-hy{background:#E1F5EE}.bg-or{background:#FAEEDA}.bg-bi{background:#EEF2FF}.bg-re{background:#EAF3DE}.bg-sm{background:#EBF4FF}
+
+/* === V11: navigation et espaces de collection === */
+.tbar{overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+.tbar::-webkit-scrollbar{display:none}.ti{min-width:66px}.ti-ic{font-size:17px}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.page-title{font-size:22px;font-weight:900}.page-sub{font-size:12px;color:var(--t2);line-height:1.45;margin-top:2px}
+.xp-pill{white-space:nowrap;background:var(--pl);color:var(--p2);padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;display:flex;align-items:center;gap:5px}
+.seg-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}.seg-tabs::-webkit-scrollbar{display:none}
+.seg-btn{border:1.5px solid var(--brd);background:white;color:var(--t2);border-radius:999px;padding:9px 13px;font:800 12px Nunito;white-space:nowrap;cursor:pointer}
+.seg-btn.on{background:var(--p);border-color:var(--p);color:white}
+.store-grid,.inventory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.product-card{background:white;border:2px solid transparent;border-radius:15px;padding:10px;box-shadow:var(--sh);position:relative;min-width:0}
+.product-card.rare{border-color:#72B7F2}.product-card.epique{border-color:#A96BD0}.product-card.legendaire{border-color:#D6A51F}
+.product-card.equipped{box-shadow:0 0 0 3px rgba(74,144,217,.22);border-color:var(--p)}
+.product-visual{height:92px;border-radius:11px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px}
+.product-name{font-size:12px;font-weight:900;line-height:1.25;min-height:30px}
+.rarity-tag,.status-tag{display:inline-flex;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:900;margin-top:5px}
+.rarity-tag.commun{background:#F1F3F5;color:#59636e}.rarity-tag.rare{background:#E3F2FD;color:#1769AA}.rarity-tag.epique{background:#F3E5F5;color:#7B1FA2}.rarity-tag.legendaire{background:#FFF4D6;color:#8A6200}
+.status-tag{background:#EEF2F6;color:#627183}.status-tag.owned{background:#E8F8F0;color:#177344}.status-tag.equipped{background:var(--pl);color:var(--p2)}
+.product-action{width:100%;border:0;border-radius:10px;padding:8px;margin-top:8px;font:900 11px Nunito;background:var(--p);color:white;cursor:pointer}
+.product-action:disabled{background:#E4E9EF;color:#8794A3;cursor:not-allowed}
+.outfit-layout{display:grid;gap:12px}.outfit-preview{background:linear-gradient(145deg,#E8F3FF,#fff);border-radius:18px;padding:16px;text-align:center;position:sticky;top:0;z-index:2;box-shadow:var(--sh)}
+.outfit-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.outfit-choice{background:white;border:2px solid transparent;border-radius:13px;padding:8px;text-align:center;cursor:pointer;box-shadow:var(--sh)}
+.outfit-choice.on{border-color:var(--p);background:var(--pl)}.outfit-choice.locked{opacity:.48;cursor:not-allowed}
+.outfit-choice.owned{border-color:#39A96B;background:#F3FFF8}
+.outfit-choice.equipped{border-color:#178A4B;background:#E8F8F0;box-shadow:0 0 0 3px rgba(23,138,75,.18)}
+.outfit-choice.on.owned{box-shadow:0 0 0 3px rgba(74,144,217,.2)}
+.equipped-home-animal{width:82px;height:82px;border-radius:15px;background:white;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 12px rgba(30,72,112,.15)}
+.equipped-friend-animal{width:220px;height:220px;border-radius:17px;background:white;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 7px 18px rgba(30,72,112,.18)}
+.collection-summary{background:linear-gradient(135deg,#34205f,#7047a6);color:white;border-radius:18px;padding:16px;margin-bottom:12px}
+.theme-row{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
+.theme-chip{border:1.5px solid var(--brd);background:white;border-radius:999px;padding:8px 11px;font:800 11px Nunito;white-space:nowrap}.theme-chip.on{background:#5D3592;color:white;border-color:#5D3592}
+.cards-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.collect-card{aspect-ratio:.64;border-radius:14px;overflow:hidden;position:relative;background:#252034;box-shadow:0 5px 14px rgba(31,22,48,.2)}
+.collect-card.locked::after{content:"A debloquer";position:absolute;inset:0;background:rgba(21,24,32,.78);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.card-art{position:absolute;inset:0;background-image:url('assets/cartes-kitty.png');background-size:500% 200%;background-repeat:no-repeat}
+.card-meta{position:absolute;left:7px;right:7px;bottom:7px;background:rgba(20,14,31,.82);color:white;border-radius:9px;padding:6px;font-size:9px;font-weight:800}
+.safety-box{background:#F7F2FF;border:1px solid #E3D5F3;border-radius:14px;padding:12px;color:#5D3B78;font-size:11px;font-weight:700;line-height:1.5;margin-top:12px}
+.challenge-cats{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}.challenge-chip{background:white;border:1px solid var(--brd);border-radius:999px;padding:7px 10px;font-size:10px;font-weight:800;white-space:nowrap}
+.career-grid{display:grid;gap:9px}.career-card{background:white;border-radius:15px;padding:14px;box-shadow:var(--sh)}
+.career-kicker{font-size:10px;font-weight:900;color:var(--p);text-transform:uppercase;letter-spacing:.6px}.career-title{font-size:14px;font-weight:900;margin:3px 0}.career-text{font-size:12px;color:var(--t2);line-height:1.5}
+.reader-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.reader-opt{background:white;border:2px solid var(--brd);border-radius:14px;padding:12px 8px;text-align:center;font-size:12px;font-weight:900;cursor:pointer}.reader-opt.sel{border-color:var(--p);background:var(--pl)}
+.big-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.big-menu-card{background:white;border:0;border-radius:18px;padding:18px 12px;min-height:145px;box-shadow:var(--sh);font-family:Nunito;text-align:center;cursor:pointer;color:var(--text)}.big-menu-icon{font-size:48px;display:block;margin-bottom:8px}.big-menu-title{font-size:14px;font-weight:900}.big-menu-sub{font-size:10px;color:var(--t2);line-height:1.4;margin-top:4px}
+.visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.visual-tile{background:white;border:2px solid transparent;border-radius:15px;padding:12px 5px;text-align:center;box-shadow:var(--sh);cursor:pointer}.visual-tile.on{border-color:var(--p);background:var(--pl)}.visual-icon{font-size:38px}.visual-word{font-size:11px;font-weight:900;margin-top:5px}
+.weekly-option{background:white;border:2px solid transparent;border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px;box-shadow:var(--sh);cursor:pointer}.weekly-option.sel{border-color:var(--p);background:var(--pl)}.weekly-icon{font-size:30px}.weekly-main{flex:1}.weekly-name{font-size:13px;font-weight:900}.weekly-desc{font-size:10px;color:var(--t2);margin-top:2px}.weekly-check{width:25px;height:25px;border:2px solid #c8d2dd;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:white}.weekly-option.sel .weekly-check{background:var(--p);border-color:var(--p)}
+.token-line{display:flex;align-items:center;gap:5px;font-weight:900}.coin-icon{display:inline-block;width:1.45em;height:1.45em;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 2px 3px rgba(125,76,0,.2));flex-shrink:0}.token-coin{width:20px;height:20px}.shop-back{border:0;background:transparent;color:var(--p);font:900 12px Nunito;padding:0 0 12px;cursor:pointer}.speak-mini{border:0;background:var(--pl);color:var(--p);border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer}
+.place-card{background:white;border-radius:15px;padding:13px;margin-bottom:9px;display:flex;gap:11px;align-items:center;box-shadow:var(--sh);cursor:pointer}.place-icon{font-size:34px;width:48px;text-align:center}.place-name{font-size:13px;font-weight:900}.place-cat{font-size:9px;font-weight:900;color:var(--p);text-transform:uppercase}.place-desc{font-size:11px;color:var(--t2);line-height:1.4;margin-top:2px}
+.youtube-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.youtube-category{border:0;border-radius:18px;background:white;min-height:112px;padding:16px 12px;box-shadow:var(--sh);color:var(--text);font-family:Nunito;text-align:left;cursor:pointer}.youtube-category-icon{display:block;font-size:32px;margin-bottom:8px}.youtube-category-title{display:block;font-size:14px;font-weight:900;line-height:1.2}.youtube-category-count{display:block;color:var(--t2);font-size:10px;font-weight:700;margin-top:5px}.youtube-link{color:inherit;text-decoration:none}.youtube-link .place-card{min-height:72px}.youtube-open{margin-left:auto;color:var(--p);font-size:18px;font-weight:900}.youtube-empty{background:white;border-radius:16px;padding:24px 18px;text-align:center;box-shadow:var(--sh);color:var(--t2);font-size:12px;line-height:1.5}
+.ti.friend-tab .ti-lb{font-weight:900;color:var(--text);text-transform:uppercase}.ti.friend-tab.on .ti-lb{color:var(--p)}
+.home-tips{display:grid;gap:8px}.home-tip{background:white;border-radius:14px;padding:12px;box-shadow:var(--sh);display:flex;align-items:center;gap:10px;cursor:pointer}.home-tip-icon{font-size:28px}.home-tip-body{flex:1}.home-tip-title{font-size:11px;font-weight:900;color:var(--p)}.home-tip-text{font-size:12px;font-weight:700;line-height:1.4;margin-top:2px}
+.print-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.print-card{background:white;border:0;border-radius:17px;padding:16px 10px;min-height:145px;box-shadow:var(--sh);font-family:Nunito;text-align:center;cursor:pointer}.print-icon{font-size:43px}.print-title{font-size:13px;font-weight:900;margin-top:7px}.print-desc{font-size:10px;color:var(--t2);line-height:1.4;margin-top:3px}
+.print-sheet{display:none;background:white;color:#17202a;padding:24px;font-family:Nunito}.print-sheet h1{text-align:center;color:#2471B8;margin-bottom:18px}.print-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.print-day{border:2px solid #9AB9D6;border-radius:10px;min-height:420px;padding:8px}.print-day strong{display:block;text-align:center;border-bottom:1px solid #ccd9e5;padding-bottom:6px}.print-line{height:48px;border-bottom:1px dashed #b8c4cf;display:flex;align-items:center;gap:5px}.print-checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px}.print-check{border:2px solid #9AB9D6;border-radius:12px;padding:12px;font-size:18px;min-height:65px}.print-emotions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center}.print-emotion{border:2px solid #9AB9D6;border-radius:14px;padding:20px;font-size:45px}.print-emotion span{display:block;font-size:14px;font-weight:900;margin-top:8px}
+@media print{
+  body *{visibility:hidden!important}.print-sheet,.print-sheet *{visibility:visible!important}.print-sheet{display:block!important;position:absolute;inset:0;width:100%;padding:10mm}.print-day{min-height:210mm}.print-hide{display:none!important}
+}
+@media(min-width:720px){.scroll{padding:22px 24px 100px;max-width:1040px;width:100%;margin:auto}.store-grid,.inventory-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.outfit-layout{grid-template-columns:300px 1fr;align-items:start}.outfit-list{grid-template-columns:repeat(5,minmax(0,1fr))}.cards-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING -->
+<div class="screen active" id="sc-ob">
+  <div class="ob-in">
+    <span class="ob-logo">🌟</span>
+    <div class="ob-title">Mon Autonomie</div>
+    <div class="ob-sub">Ton appli pour grandir chaque jour, à ton rythme !</div>
+    <div class="fl">
+      <label>🙋 Ton prénom</label>
+      <input class="fi" id="inp-n" type="text" placeholder="Prénom..." maxlength="20" autocomplete="off">
+    </div>
+    <div class="fl">
+      <label>🎂 Ton âge</label>
+      <div class="age-grid">
+        <div class="age-opt" onclick="pickAge('junior',this)"><div class="ao-r">7–11</div><div class="ao-l">Junior</div></div>
+        <div class="age-opt" onclick="pickAge('ado',this)"><div class="ao-r">12–15</div><div class="ao-l">Ado</div></div>
+        <div class="age-opt" onclick="pickAge('grand',this)"><div class="ao-r">16–20</div><div class="ao-l">Grand ado</div></div>
+      </div>
+    </div>
+    <div class="fl">
+      <label>📖 Est-ce que tu sais lire seul ?</label>
+      <div class="reader-grid">
+        <div class="reader-opt" onclick="pickReader('reader',this)">Oui, je lis seul</div>
+        <div class="reader-opt" onclick="pickReader('nonReader',this)">J'ai besoin d'aide</div>
+      </div>
+    </div>
+    <button class="btn" id="btn-st" onclick="startApp()" disabled>Choisir mon ami 🐾</button>
+  </div>
+</div>
+
+<!-- CHOIX ANIMAL -->
+<div class="screen" id="sc-anim" style="overflow-y:auto;padding:20px">
+  <div class="ac-in" style="max-width:380px;margin:0 auto;padding-bottom:20px">
+    <div class="pt">Choisis ton ami 🐾</div>
+    <div class="ps">Choisis l'animal qui t'accompagnera. Tu pourras ensuite découvrir ses 10 tenues.</div>
+    <div class="ag" id="ag"></div>
+    <button class="btn" id="btn-cf" onclick="confirmAnim()" disabled style="opacity:.4;position:sticky;bottom:0">C'est lui !</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="screen" id="sc-app">
+  <div class="scroll" id="scr">
+    <div class="tp on" id="pg-home"></div>
+    <div class="tp" id="pg-tasks"></div>
+    <div class="tp" id="pg-ami"></div>
+    <div class="tp" id="pg-disc"></div>
+    <div class="tp" id="pg-shop"></div>
+    <div class="tp" id="pg-print"></div>
+  </div>
+  <div class="tbar" id="tbar">
+    <div class="ti on" onclick="goTab('home')" id="ti-home"><div class="ti-ic">🏠</div><div class="ti-lb">Accueil</div><div class="ti-dot"></div></div>
+    <div class="ti" onclick="goTab('tasks')" id="ti-tasks"><div class="ti-ic">✅</div><div class="ti-lb">Défis</div><div class="ti-dot"></div></div>
+    <div class="ti friend-tab" onclick="goTab('ami')" id="ti-ami"><div class="ti-ic">🐾</div><div class="ti-lb">MON AMI</div><div class="ti-dot"></div></div>
+    <div class="ti" onclick="goTab('shop')" id="ti-shop"><div class="ti-ic">🏪</div><div class="ti-lb">Boutique</div><div class="ti-dot"></div></div>
+    <div class="ti" onclick="goTab('disc')" id="ti-disc"><div class="ti-ic">🎨</div><div class="ti-lb">Activités</div><div class="ti-dot"></div></div>
+    <div class="ti" onclick="goTab('print')" id="ti-print"><div class="ti-ic">🖨️</div><div class="ti-lb">À imprimer</div><div class="ti-dot"></div></div>
+  </div>
+  <button class="new-login" id="new-login" onclick="newConnection()">Nouvelle connexion</button>
+</div>
+
+<div class="print-sheet" id="print-sheet"></div>
+
+<!-- SUB-PAGES -->
+<div class="sub-page" id="sp-coloring">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-coloring')">←</button><div class="sub-title">🎨 Coloriages à imprimer</div></div>
+  <div class="sub-scroll">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px;font-weight:600;line-height:1.5">Choisis un coloriage, imprime-le et colorie-le ! Demande de l'aide à un adulte si besoin 🖨️</div>
+    <div class="color-grid">
+      <div class="color-card" onclick="window.open('https://www.coloriage.tv/coloriage-animaux','_blank')"><div class="color-ico">🐶</div><div class="color-name">Animaux</div><div class="color-hint">Chiens, chats, lions...</div></div>
+      <div class="color-card" onclick="window.open('https://www.coloriage.tv/coloriage-nature','_blank')"><div class="color-ico">🌸</div><div class="color-name">Nature</div><div class="color-hint">Fleurs, arbres, forêt...</div></div>
+      <div class="color-card" onclick="window.open('https://www.coloriage.tv/coloriage-vehicules','_blank')"><div class="color-ico">🚗</div><div class="color-name">Véhicules</div><div class="color-hint">Voitures, trains, avions...</div></div>
+      <div class="color-card" onclick="window.open('https://www.coloriage.tv/coloriage-mandala','_blank')"><div class="color-ico">🌀</div><div class="color-name">Mandalas</div><div class="color-hint">Formes répétées et zen</div></div>
+      <div class="color-card" onclick="window.open('https://www.coloriage.tv/coloriage-personnages','_blank')"><div class="color-ico">🧙</div><div class="color-name">Personnages</div><div class="color-hint">Héros, princesses...</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-page" id="sp-outdoor">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-outdoor')">←</button><div class="sub-title">🏃 Jeux dehors</div></div>
+  <div class="sub-scroll" id="outdoor-content"></div>
+</div>
+
+<div class="sub-page" id="sp-puzzle">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-puzzle')">←</button><div class="sub-title">🧩 Astuces pour puzzle</div></div>
+  <div class="sub-scroll">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.5;font-weight:600">Voici les secrets des champions de puzzle !</div>
+    <div class="card" style="margin-bottom:10px">
+      <div style="font-size:24px;margin-bottom:6px">1️⃣</div>
+      <div class="tip-txt">Retourne toutes les pièces face visible avant de commencer. Comme ça tu les vois toutes !</div>
+    </div>
+    <div class="card" style="margin-bottom:10px"><div style="font-size:24px;margin-bottom:6px">2️⃣</div><div class="tip-txt">Commence par trouver tous les bords. Ils ont au moins un côté droit — c'est plus facile !</div></div>
+    <div class="card" style="margin-bottom:10px"><div style="font-size:24px;margin-bottom:6px">3️⃣</div><div class="tip-txt">Trie par couleur ou par zone de l'image. Mets ensemble les pièces qui se ressemblent.</div></div>
+    <div class="card" style="margin-bottom:10px"><div style="font-size:24px;margin-bottom:6px">4️⃣</div><div class="tip-txt">Regarde bien la boîte ! C'est ta carte au trésor. Pose-la devant toi pendant que tu joues.</div></div>
+    <div class="card" style="margin-bottom:10px"><div style="font-size:24px;margin-bottom:6px">5️⃣</div><div class="tip-txt">Ne te décourage pas si c'est long. Un puzzle se fait en plusieurs sessions, c'est normal !</div></div>
+    <div class="card"><div style="font-size:24px;margin-bottom:6px">6️⃣</div><div class="tip-txt">Commence par un angle du puzzle. Une fois un coin trouvé, les pièces suivantes sont plus faciles.</div></div>
+  </div>
+</div>
+
+<div class="sub-page" id="sp-books">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-books')">←</button><div class="sub-title">📚 Mes livres lus</div></div>
+  <div class="sub-scroll">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.5;font-weight:600">Note tous les livres que tu as lus ! C'est ta bibliothèque personnelle 📖</div>
+    <ul class="book-list" id="book-list"></ul>
+    <div class="book-add">
+      <input id="book-inp" type="text" placeholder="Titre du livre..." maxlength="60">
+      <button onclick="addBook()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<div class="sub-page" id="sp-build">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-build')">←</button><div class="sub-title">🏗️ Idées de construction</div></div>
+  <div class="sub-scroll" id="build-content"></div>
+</div>
+
+<div class="sub-page" id="sp-offscreen">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-offscreen')">←</button><div class="sub-title">✨ Idées sans écran</div></div>
+  <div class="sub-scroll" id="offscreen-content"></div>
+</div>
+
+<!-- PLAN EDITOR -->
+<div class="sub-page" id="sp-plan-edit">
+  <div class="sub-hd"><button class="sub-back" onclick="closeSub('sp-plan-edit')">←</button><div class="sub-title" id="sp-plan-title">Modifier</div></div>
+  <div class="sub-scroll">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:12px;font-weight:600">Choisis une activité pour ce créneau :</div>
+    <div id="plan-edit-choices"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="lu" id="lu"><div class="lu-a" id="lu-a">🌟</div><div class="lu-t" id="lu-t">Incroyable !</div><div class="lu-s" id="lu-s">Ton compagnon a évolué !</div><button class="lu-btn" onclick="closeLU()">Super ! 🎉</button></div>
+
+<script>
+
+// ============================================================
+// SPRITE SYSTEM — vraies illustrations
+// ============================================================
+const ANIM_URL = 'assets/animaux-tenues.jpeg';
+const ACC_URL  = 'assets/accessoires.png';
+const ANIM_CFG = {lw:100,lh:50,cw:143,rh:69,W:1536,H:1024};
+const ACC_CFG  = {lw:122.2,cw:115.6,W:1402,H:1122};
+const ACC_ROWS = {commun:{y:15,h:140},rare:{y:185,h:140},epique:{y:355,h:140},legendaire:{y:525,h:130}};
+const ANIM_ROWS = {};
+ANIM_ROWS['kitty']=0;ANIM_ROWS['rex']=1;ANIM_ROWS['pom']=2;ANIM_ROWS['rouxy']=3;ANIM_ROWS['draco']=4;ANIM_ROWS['bou']=5;ANIM_ROWS['perro']=6;ANIM_ROWS['nemo']=7;ANIM_ROWS['gigi']=8;ANIM_ROWS['oscar']=9;ANIM_ROWS['fine']=10;ANIM_ROWS['leon']=11;ANIM_ROWS['riko']=12;ANIM_ROWS['bob']=13;
+
+
+function animSprite(animalId, outfitIdx, w, h) {
+  const row = ANIM_ROWS[animalId];
+  if(row===undefined) return '';
+  w=w||80; h=h||70;
+  const sx = ANIM_CFG.lw + outfitIdx * ANIM_CFG.cw;
+  const sy = ANIM_CFG.lh + row * ANIM_CFG.rh;
+  const bw = Math.round(ANIM_CFG.W * w / ANIM_CFG.cw);
+  const bh = Math.round(ANIM_CFG.H * h / ANIM_CFG.rh);
+  const px = -Math.round(sx * w / ANIM_CFG.cw);
+  const py = -Math.round(sy * h / ANIM_CFG.rh);
+  return `background:url('${ANIM_URL}') ${px}px ${py}px/${bw}px ${bh}px no-repeat;width:${w}px;height:${h}px;display:inline-block;flex-shrink:0`;
+}
+
+function accSprite(itemId, w, h) {
+  w=w||56; h=h||56;
+  let rarity, idx;
+  if(itemId<=10){rarity='commun';idx=itemId-1;}
+  else if(itemId<=20){rarity='rare';idx=itemId-11;}
+  else if(itemId<=30){rarity='epique';idx=itemId-21;}
+  else{rarity='legendaire';idx=itemId-31;}
+  const row = ACC_ROWS[rarity];
+  const sx = ACC_CFG.lw + idx * ACC_CFG.cw;
+  const sy = row.y;
+  const bw = Math.round(ACC_CFG.W * w / ACC_CFG.cw);
+  const bh = Math.round(ACC_CFG.H * h / row.h);
+  const px = -Math.round(sx * w / ACC_CFG.cw);
+  const py = -Math.round(sy * h / row.h);
+  return `background:url('${ACC_URL}') ${px}px ${py}px/${bw}px ${bh}px no-repeat;width:${w}px;height:${h}px;display:inline-block;flex-shrink:0`;
+}
+
+function animImg(animalId, outfitIdx, w, h, extraStyle) {
+  const number=String((Number(outfitIdx)||0)+1).padStart(2,'0');
+  return `<img class="animal-png" src="assets/tenues/${animalId}-${number}.png?v=5" alt="" width="${w||80}" height="${h||70}" style="${extraStyle||''}">`;
+}
+
+// Portrait haute qualité pour l'accueil et le choix de l'ami.
+// L'ancienne illustration reste visible si le portrait n'a pas encore été ajouté.
+function portraitImg(animalId,w,h){
+  w=w||112;h=h||112;
+  return `<div class="portrait-frame" style="width:${w}px;height:${h}px"><div class="portrait-fallback">${animImg(animalId,0,Math.round(w*.9),Math.round(h*.9))}</div><img src="assets/portraits/${animalId}.png?v=2" alt="${animalId}" onerror="this.style.display='none'"></div>`;
+}
+
+function accImg(itemId, w, h, extraStyle) {
+  return `<div style="${accSprite(itemId,w,h)};${extraStyle||''}"></div>`;
+}
+
+// ==========================================================
+// ANIMALS — 14 compagnons (sans coccinelle)
+// ==========================================================
+const ANIMALS=[
+  {id:'kitty', name:'Kitty', emoji:'🐱', labels:['Chaton timide','Chatte élégante','Chatte aventurière','Lionne royale'], thr:[0,30,80,180]},
+  {id:'rex',   name:'Rex',   emoji:'🐶', labels:['Chiot curieux','Chien courageux','Chien champion','Chien légendaire'], thr:[0,30,80,180]},
+  {id:'pom',   name:'Pom',   emoji:'🐰', labels:['Lapine douce','Lapine stylée','Lapine aventurière','Lapine légendaire'], thr:[0,30,80,180]},
+  {id:'rouxy', name:'Rouxy', emoji:'🦊', labels:['Renardeau espiègle','Renard rusé','Renard explorateur','Renard légendaire'], thr:[0,30,80,180]},
+  {id:'draco', name:'Draco', emoji:'🐉', labels:['Dragonnet','Dragon guerrier','Dragon sage','Dragon légendaire'], thr:[0,30,80,180]},
+  {id:'bou',   name:'Bou',   emoji:'🦉', labels:['Hibou curieux','Hibou savant','Hibou explorateur','Grand sage hibou'], thr:[0,30,80,180]},
+  {id:'perro', name:'Perro', emoji:'🦜', labels:['Perroquet bébé','Perroquet pirate','Perroquet artiste','Maestro'], thr:[0,30,80,180]},
+  {id:'nemo',  name:'Nemo',  emoji:'🐠', labels:['Petit clown','Poisson aventurier','Explorateur des mers','Légende des océans'], thr:[0,30,80,180]},
+  {id:'gigi',  name:'Gigi',  emoji:'🦒', labels:['Girafe bébé','Girafe curieuse','Grande exploratrice','Reine de la savane'], thr:[0,30,80,180]},
+  {id:'oscar', name:'Oscar', emoji:'🐘', labels:['Éléphanteau','Éléphant sportif','Éléphant élégant','Roi des éléphants'], thr:[0,30,80,180]},
+  {id:'fine',  name:'Fine',  emoji:'🐬', labels:['Dauphin bébé','Dauphin espiègle','Dauphin héros','Dauphin légendaire'], thr:[0,30,80,180]},
+  {id:'leon',  name:'Léon',  emoji:'🦁', labels:['Lionceau','Lion sportif','Lion courageux','Roi lion'], thr:[0,30,80,180]},
+  {id:'riko',  name:'Riko',  emoji:'🐒', labels:['Singe bébé','Singe malin','Singe aventurier','Singe légendaire'], thr:[0,30,80,180]},
+  {id:'bob',   name:'Bob',   emoji:'🐧', labels:['Pingouin bébé','Pingouin pirate','Pingouin élégant','Pingouin légendaire'], thr:[0,30,80,180]},
+];
+
+// Tenues : 10 par animal — débloquées par XP progressifs
+// XP requis par tenue : 0,8,16,25,35,50,70,100,140,180
+const OUTFIT_XP=[0,8,16,25,35,50,70,100,140,180];
+
+const OUTFITS={
+  kitty:[
+    {id:1,name:'Naturelle',    ico:'🐱',desc:'Sa tenue de naissance'},
+    {id:2,name:'Robe rose',    ico:'👗',desc:'Une jolie robe à volants'},
+    {id:3,name:'Tenue marine', ico:'⚓',desc:'Style marin élégant'},
+    {id:4,name:'Tenue violette',ico:'🎧',desc:'Bonnet, casque et tenue violette'},
+    {id:5,name:'Costume dino', ico:'🦖',desc:'Déguisement de dinosaure !'},
+    {id:6,name:'Casquette rouge',ico:'🧢',desc:'Une tenue rouge décontractée'},
+    {id:7,name:'Veste en jean',ico:'🧥',desc:'Une veste bleue élégante'},
+    {id:8,name:'Imperméable',  ico:'🌧️',desc:'Jaune pour les jours de pluie'},
+    {id:9,name:'Smoking',      ico:'🎩',desc:'Élégance au sommet'},
+    {id:10,name:'Robe rose chic',ico:'✨',desc:'Une robe rose avec un joli nœud'},
+  ],
+  rex:[
+    {id:1,name:'Naturel',      ico:'🐶',desc:'Son pelage naturel'},
+    {id:2,name:'Tenue police', ico:'👮',desc:'Rex agent de l\'ordre'},
+    {id:3,name:'Tenue militaire',ico:'🪖',desc:'Soldat courageux'},
+    {id:4,name:'Super-chien',  ico:'🦸',desc:'La cape de super-héros'},
+    {id:5,name:'Pyjama bleu',  ico:'🌙',desc:'Un pyjama confortable'},
+    {id:6,name:'Basketteur',   ico:'🏀',desc:'Maillot rouge et ballon de basket'},
+    {id:7,name:'Tenue chef',   ico:'👨‍🍳',desc:'Toque blanche'},
+    {id:8,name:'Imper jaune',  ico:'☔',desc:'Imperméable des jours pluvieux'},
+    {id:9,name:'Smoking',      ico:'🎩',desc:'James Bond canin'},
+    {id:10,name:'Tenue Noël',  ico:'🎄',desc:'La tenue de fête ultime'},
+  ],
+  pom:[
+    {id:1,name:'Naturelle',    ico:'🐰',desc:'Son pelage blanc naturel'},
+    {id:2,name:'Robe rose',    ico:'🩰',desc:'Danseuse étoile'},
+    {id:3,name:'Salopette bleue',ico:'👖',desc:'Une salopette bleue'},
+    {id:4,name:'Tenue violette',ico:'🎧',desc:'Casque et tenue violette'},
+    {id:5,name:'Tenue jardin', ico:'🌻',desc:'Chapeau de jardinière'},
+    {id:6,name:'Tenue sport',  ico:'⚽',desc:'Joueuse de foot'},
+    {id:7,name:'Blouse blanche',ico:'🔬',desc:'Une blouse de scientifique'},
+    {id:8,name:'Imperméable jaune',ico:'☔',desc:'Pour les jours de pluie'},
+    {id:9,name:'Écolière',     ico:'🎒',desc:'Lunettes et sac à dos'},
+    {id:10,name:'Pyjama violet',ico:'🌙',desc:'Un pyjama violet tout doux'},
+  ],
+  rouxy:[
+    {id:1,name:'Naturel',      ico:'🦊',desc:'Pelage roux naturel'},
+    {id:2,name:'Détective',    ico:'🔍',desc:'Chapeau et loupe'},
+    {id:3,name:'Agent masqué', ico:'🥷',desc:'Masque et tenue sombre'},
+    {id:4,name:'Tenue marine', ico:'⚓',desc:'Bonnet bleu et tenue marine'},
+    {id:5,name:'Capitaine',    ico:'⛵',desc:'Capitaine Rouxy'},
+    {id:6,name:'Policier',     ico:'👮',desc:'Casquette et uniforme bleu'},
+    {id:7,name:'Businessman',  ico:'💼',desc:'Costume et cravate'},
+    {id:8,name:'Archéologue',  ico:'⛏️',desc:'Chapeau d\'aventurier'},
+    {id:9,name:'Rock star',    ico:'🎸',desc:'Lunettes et veste'},
+    {id:10,name:'Sorcier',     ico:'🧙',desc:'Cape et chapeau magique'},
+  ],
+  draco:[
+    {id:1,name:'Naturel',      ico:'🐉',desc:'Écailles naturelles'},
+    {id:2,name:'Chevalier',    ico:'⚔️',desc:'Armure de chevalier'},
+    {id:3,name:'Aventurier',   ico:'🌿',desc:'Tenue brune d’aventurier'},
+    {id:4,name:'Sorcier',      ico:'🔮',desc:'Bâton et cape'},
+    {id:5,name:'Explorateur',  ico:'🧭',desc:'Tenue verte d’exploration'},
+    {id:6,name:'Ninja',        ico:'🥷',desc:'Tenue noire de ninja'},
+    {id:7,name:'Dragon royal', ico:'👑',desc:'Tenue rouge et dorée'},
+    {id:8,name:'Inventeur',    ico:'🔬',desc:'Lunettes et tenue de savant'},
+    {id:9,name:'Tenue noire',  ico:'🥷',desc:'Une tenue noire discrète'},
+    {id:10,name:'Astronaute',  ico:'🚀',desc:'Combinaison spatiale'},
+  ],
+  bou:[
+    {id:1,name:'Naturel',      ico:'🦉',desc:'Plumes naturelles'},
+    {id:2,name:'Diplômé',      ico:'🎓',desc:'Toque et tenue de cérémonie'},
+    {id:3,name:'Aventurier',   ico:'🧭',desc:'Chapeau et tenue d’aventure'},
+    {id:4,name:'Détective',    ico:'🔍',desc:'Chapeau et manteau de détective'},
+    {id:5,name:'Explorateur',  ico:'🔭',desc:'Jumelles et chapeau'},
+    {id:6,name:'Hibou à lunettes',ico:'👓',desc:'De grandes lunettes rondes'},
+    {id:7,name:'Haut-de-forme',ico:'🎩',desc:'Élégant chapeau noir'},
+    {id:8,name:'Tenue d’hiver',ico:'🧣',desc:'Bonnet et écharpe rouges'},
+    {id:9,name:'Scientifique', ico:'🔬',desc:'Blouse blanche et lunettes'},
+    {id:10,name:'Roi sage',    ico:'👑',desc:'La couronne du grand sage'},
+  ],
+  perro:[
+    {id:1,name:'Naturel',      ico:'🦜',desc:'Plumes colorées'},
+    {id:2,name:'Pirate',       ico:'🏴‍☠️',desc:'Bandana et crochet'},
+    {id:3,name:'Marin rayé',   ico:'⚓',desc:'Maillot de marin'},
+    {id:4,name:'Bandana rouge',ico:'☀️',desc:'Une tenue rouge vive'},
+    {id:5,name:'Casque audio', ico:'🎧',desc:'Un casque et une tenue rouge'},
+    {id:6,name:'Cowboy',       ico:'🤠',desc:'Chapeau brun de cowboy'},
+    {id:7,name:'Bohémien',     ico:'🎨',desc:'Chapeau et écharpe'},
+    {id:8,name:'Magicien',     ico:'🎩',desc:'Chapeau haut-de-forme'},
+    {id:9,name:'Magicien',     ico:'🎩',desc:'Haut-de-forme noir'},
+    {id:10,name:'Tenue d’hiver',ico:'🧣',desc:'Bonnet et écharpe bleus'},
+  ],
+  nemo:[
+    {id:1,name:'Naturel',      ico:'🐠',desc:'Ses rayures naturelles'},
+    {id:2,name:'Explorateur marin',ico:'🤿',desc:'Lunettes et chapeau marin'},
+    {id:3,name:'Pirate des mers',ico:'🏴‍☠️',desc:'Chapeau de pirate'},
+    {id:4,name:'Agent secret', ico:'🕵️',desc:'Masque et combinaison'},
+    {id:5,name:'Chef cuisto',  ico:'👨‍🍳',desc:'Toque de chef des mers'},
+    {id:6,name:'Petit marin',  ico:'⚓',desc:'Casquette et tenue de marin'},
+    {id:7,name:'Chapeau haut', ico:'🎩',desc:'Très élégant !'},
+    {id:8,name:'Fête party',   ico:'🎉',desc:'Chapeau de fête'},
+    {id:9,name:'Plongeur',     ico:'🤿',desc:'Masque de plongée'},
+    {id:10,name:'Bonnet hiver',ico:'🧤',desc:'Nemo en hiver'},
+  ],
+  gigi:[
+    {id:1,name:'Naturelle',    ico:'🦒',desc:'Pelage naturel'},
+    {id:2,name:'Robe rose',    ico:'👗',desc:'Girafe girly'},
+    {id:3,name:'Détective',    ico:'🔍',desc:'Chapeau et lunettes'},
+    {id:4,name:'Écolière',     ico:'📚',desc:'Cartable et lunettes'},
+    {id:5,name:'Sportive',     ico:'⚽',desc:'Maillot de football'},
+    {id:6,name:'Chef cuisto',  ico:'👨‍🍳',desc:'Toque et tablier'},
+    {id:7,name:'Serveuse chic',ico:'🍽️',desc:'Tenue noire et blanche'},
+    {id:8,name:'Imperméable jaune',ico:'☔',desc:'Pour les jours de pluie'},
+    {id:9,name:'Vacances',     ico:'🌴',desc:'Lunettes et tenue colorée'},
+    {id:10,name:'Tenue d’hiver',ico:'🧣',desc:'Bonnet et écharpe bleus'},
+  ],
+  oscar:[
+    {id:1,name:'Naturel',      ico:'🐘',desc:'Sa peau grise naturelle'},
+    {id:2,name:'Robe rose',    ico:'💐',desc:'Oscar en rose !'},
+    {id:3,name:'Aventurier',   ico:'🧭',desc:'Chapeau d\'aventurier'},
+    {id:4,name:'Tenue bleue',  ico:'🧥',desc:'Une tenue bleue confortable'},
+    {id:5,name:'Explorateur',  ico:'🧭',desc:'Sac et tenue d’exploration'},
+    {id:6,name:'Basketteur',   ico:'🏀',desc:'Maillot rouge et ballon'},
+    {id:7,name:'Tenue royale', ico:'👑',desc:'Veste rouge et dorée'},
+    {id:8,name:'Imperméable jaune',ico:'☔',desc:'Pour les jours de pluie'},
+    {id:9,name:'Agent secret', ico:'🕵️',desc:'Lunettes noires et costume'},
+    {id:10,name:'Tenue d’hiver',ico:'🧣',desc:'Bonnet et écharpe bleus'},
+  ],
+  fine:[
+    {id:1,name:'Naturelle',    ico:'🐬',desc:'Sa peau naturelle'},
+    {id:2,name:'Marin jaune',  ico:'⚓',desc:'Casquette et tenue jaunes'},
+    {id:3,name:'Capitaine',    ico:'⚓',desc:'Casquette de capitaine'},
+    {id:4,name:'Super-héroïne',ico:'🦸',desc:'Cape de super-dauphin'},
+    {id:5,name:'Agent secret', ico:'🕵️',desc:'Masque et tenue sombre'},
+    {id:6,name:'Gentleman',    ico:'🎩',desc:'Haut-de-forme et nœud rouge'},
+    {id:7,name:'Danseuse',     ico:'🩰',desc:'Jupe rose et nœud'},
+    {id:8,name:'Casque audio', ico:'🎧',desc:'Casque violet et bleu'},
+    {id:9,name:'Nageuse',      ico:'🏊',desc:'Prête à nager'},
+    {id:10,name:'Sportive',    ico:'🥋',desc:'Bandeau rouge de sportive'},
+  ],
+  leon:[
+    {id:1,name:'Naturel',      ico:'🦁',desc:'Crinière naturelle'},
+    {id:2,name:'Roi lion',     ico:'👑',desc:'Cape rouge et couronne'},
+    {id:3,name:'Aventurier',   ico:'🧭',desc:'Chapeau et tenue verte'},
+    {id:4,name:'Tenue bleue',  ico:'🧥',desc:'Veste et pantalon bleus'},
+    {id:5,name:'Tenue royale', ico:'👑',desc:'Cape rouge et couronne'},
+    {id:6,name:'Footballeur',  ico:'⚽',desc:'Maillot noir et ballon'},
+    {id:7,name:'Gentleman',    ico:'🤵',desc:'Costume noir et cravate'},
+    {id:8,name:'Explorateur',  ico:'🧭',desc:'Chapeau et tenue d’aventure'},
+    {id:9,name:'Agent secret', ico:'🕵️',desc:'Lunettes noires et costume'},
+    {id:10,name:'Casque audio',ico:'🎧',desc:'Casque bleu et tenue assortie'},
+  ],
+  riko:[
+    {id:1,name:'Naturel',      ico:'🐒',desc:'Pelage naturel'},
+    {id:2,name:'Casquette rouge',ico:'🧢',desc:'Tenue rouge et verte'},
+    {id:3,name:'Aviateur',     ico:'✈️',desc:'Bonnet et lunettes d’aviateur'},
+    {id:4,name:'Tenue bleue',  ico:'🧥',desc:'Une tenue bleue décontractée'},
+    {id:5,name:'Sportif',      ico:'🏃',desc:'Casquette et tenue verte'},
+    {id:6,name:'Cuisinier',    ico:'👨‍🍳',desc:'Toque de chef'},
+    {id:7,name:'Gentleman',    ico:'🎩',desc:'Haut-de-forme et costume noir'},
+    {id:8,name:'Explorateur',  ico:'🧭',desc:'Chapeau et tenue d’aventure'},
+    {id:9,name:'Agent secret', ico:'🕵️',desc:'Lunettes noires et costume'},
+    {id:10,name:'Casque audio',ico:'🎧',desc:'Casque bleu et tenue assortie'},
+  ],
+  bob:[
+    {id:1,name:'Naturel',      ico:'🐧',desc:'Pingouin en tuxedo naturel'},
+    {id:2,name:'Tenue rose',   ico:'🎀',desc:'Une tenue rose avec un nœud'},
+    {id:3,name:'Astronaute',   ico:'🚀',desc:'Combinaison spatiale'},
+    {id:4,name:'Super-héros',  ico:'🦸',desc:'Cape de super-pingouin'},
+    {id:5,name:'Aventurier',   ico:'🌿',desc:'Tenue verte d’aventure'},
+    {id:6,name:'Chef',         ico:'👨‍🍳',desc:'Toque de chef étoilé'},
+    {id:7,name:'Gentleman',    ico:'🎩',desc:'Haut-de-forme et nœud rouge'},
+    {id:8,name:'Imperméable jaune',ico:'☔',desc:'Pour les jours de pluie'},
+    {id:9,name:'Agent secret', ico:'🕵️',desc:'Lunettes noires et costume'},
+    {id:10,name:'Tenue d’hiver',ico:'🧣',desc:'Bonnet et écharpe rouges'},
+  ],
+};
+
+// ==========================================================
+// BOUTIQUE — 40 accessoires en 4 raretés
+// ==========================================================
+const RARITY_COLORS={commun:'#9E9E9E',rare:'#2196F3',epique:'#9C27B0',legendaire:'#FF9800'};
+const RARITY_LABELS={commun:'Commun',rare:'Rare',epique:'Épique',legendaire:'Légendaire'};
+const RARITY_STARS={commun:'☆',rare:'★',epique:'★★',legendaire:'★★★'};
+
+const SHOP_ITEMS=[
+  // COMMUN (1-10) — prix bas
+  {id:1, name:'Casquette rouge',   ico:'🧢', rarity:'commun',    price:8,  event:null},
+  {id:2, name:'Casquette bleue',   ico:'🎓', rarity:'commun',    price:8,  event:null},
+  {id:3, name:'Bonnet hiver',      ico:'🎿', rarity:'commun',    price:10, event:null},
+  {id:4, name:'Chapeau de paille', ico:'👒', rarity:'commun',    price:10, event:null},
+  {id:5, name:'Nœud papillon',     ico:'🎀', rarity:'commun',    price:12, event:null},
+  {id:6, name:'Lunettes rondes',   ico:'👓', rarity:'commun',    price:12, event:null},
+  {id:7, name:'Lunettes de soleil',ico:'🕶️', rarity:'commun',    price:12, event:null},
+  {id:8, name:'Écharpe',           ico:'🧣', rarity:'commun',    price:15, event:null},
+  {id:9, name:'Sac à dos',         ico:'🎒', rarity:'commun',    price:15, event:null},
+  {id:10,name:'Montre',            ico:'⌚', rarity:'commun',    price:18, event:null},
+  // RARE (11-20) — prix moyen
+  {id:11,name:'Casque audio',      ico:'🎧', rarity:'rare',      price:25, event:null},
+  {id:12,name:'Couronne de fleurs',ico:'💐', rarity:'rare',      price:25, event:null},
+  {id:13,name:'Ailes d\'ange',     ico:'🕊️', rarity:'rare',      price:30, event:null},
+  {id:14,name:'Cape de héros',     ico:'🦸', rarity:'rare',      price:30, event:null},
+  {id:15,name:'Ceinture aventurier',ico:'🪢',rarity:'rare',      price:35, event:null},
+  {id:16,name:'Loupe explorateur', ico:'🔍', rarity:'rare',      price:35, event:null},
+  {id:17,name:'Lampe frontale',    ico:'🔦', rarity:'rare',      price:40, event:null},
+  {id:18,name:'Brassard sportif',  ico:'💪', rarity:'rare',      price:40, event:null},
+  {id:19,name:'Badge étoile',      ico:'⭐', rarity:'rare',      price:45, event:null},
+  {id:20,name:'Gants élégants',    ico:'🤍', rarity:'rare',      price:45, event:null},
+  // ÉPIQUE (21-30) — prix élevé
+  {id:21,name:'Couronne royale',   ico:'👑', rarity:'epique',    price:60, event:null},
+  {id:22,name:'Cape royale',       ico:'🪄', rarity:'epique',    price:65, event:null},
+  {id:23,name:'Lunettes futuristes',ico:'🥽',rarity:'epique',    price:70, event:null},
+  {id:24,name:'Jetpack',           ico:'🚀', rarity:'epique',    price:75, event:null},
+  {id:25,name:'Casque spatial',    ico:'👨‍🚀',rarity:'epique',    price:80, event:null},
+  {id:26,name:'Ailes magiques',    ico:'🦋', rarity:'epique',    price:85, event:null},
+  {id:27,name:'Aura lumineuse',    ico:'✨', rarity:'epique',    price:90, event:null},
+  {id:28,name:'Étoiles flottantes',ico:'💫', rarity:'epique',    price:90, event:'evenement'},
+  {id:29,name:'Drone compagnon',   ico:'🤖', rarity:'epique',    price:95, event:null},
+  {id:30,name:'Trône portable',    ico:'🪑', rarity:'epique',    price:100,event:'evenement'},
+  // LÉGENDAIRE (31-40) — prix très élevé ou événement
+  {id:31,name:'Médaille d\'or',    ico:'🏅', rarity:'legendaire', price:120,event:null},
+  {id:32,name:'Trophée miniature', ico:'🏆', rarity:'legendaire', price:130,event:null},
+  {id:33,name:'Ruban champion',    ico:'🎗️', rarity:'legendaire', price:140,event:'evenement'},
+  {id:34,name:'Diplôme roulé',     ico:'📜', rarity:'legendaire', price:150,event:null},
+  {id:35,name:'Clé dorée',         ico:'🗝️', rarity:'legendaire', price:160,event:null},
+  {id:36,name:'Carte au trésor',   ico:'🗺️', rarity:'legendaire', price:170,event:null},
+  {id:37,name:'Carte VIP',         ico:'💎', rarity:'legendaire', price:180,event:'evenement'},
+  {id:38,name:'Livre magique',     ico:'📖', rarity:'legendaire', price:190,event:null},
+  {id:39,name:'Boussole enchantée',ico:'🧭', rarity:'legendaire', price:200,event:null},
+  {id:40,name:'Gemme lumineuse',   ico:'💠', rarity:'legendaire', price:220,event:'evenement'},
+];
+
+// Fonds d'écran (3 liés aux niveaux XP)
+const BG_THEMES=[
+  {id:'bg1',name:'Début de l\'aventure',gradient:'linear-gradient(135deg,#4A90D9,#74b3e8)',label:'Niveau 1 — Gratuit',price:0},
+  {id:'bg2',name:'En progression',gradient:'linear-gradient(135deg,#27AE60,#A8E063)',label:'Niveau 2 — 30 XP',price:30},
+  {id:'bg3',name:'Maîtrise',gradient:'linear-gradient(135deg,#F39C12,#e74c3c)',label:'Niveau 3 — 80 XP',price:80},
+];
+
+// ==========================================================
+// TASKS — renouvellement journalier par pool
+// ==========================================================
+const TASK_POOLS={
+  junior:{
+    hygiene:[
+      {n:'Me brosser les dents',p:'🪥',xp:3},{n:'Me laver les mains',p:'🧼',xp:3},
+      {n:'Prendre ma douche',p:'🚿',xp:5},{n:'Me laver le visage',p:'💧',xp:3},
+      {n:'Me peigner les cheveux',p:'💆',xp:3},{n:'M\'habiller tout seul',p:'👕',xp:3},
+    ],
+    repas:[
+      {n:'Manger mes légumes',p:'🥦',xp:3},{n:'Prendre mon petit-déjeuner',p:'🥣',xp:3},
+      {n:'Mettre la table',p:'🍽️',xp:3},{n:'Débarrasser mon assiette',p:'🥄',xp:3},
+      {n:'Manger un fruit',p:'🍎',xp:3},{n:'Boire de l\'eau',p:'💧',xp:3},
+    ],
+    rangement:[
+      {n:'Ranger ma chambre',p:'🛏️',xp:5},{n:'Ranger mes jouets',p:'🧸',xp:5},
+      {n:'Plier mes habits',p:'👕',xp:5},{n:'Vider mon sac',p:'🎒',xp:3},
+      {n:'Ranger mes chaussures',p:'👟',xp:3},{n:'Mettre le linge sale',p:'🧺',xp:3},
+    ],
+    horscran:[
+      {n:'Lire 15 minutes',p:'📚',xp:5},{n:'Dessiner ou colorier',p:'🎨',xp:5},
+      {n:'Jouer dehors 20 min',p:'🏃',xp:5},{n:'Faire un puzzle',p:'🧩',xp:5},
+      {n:'Jouer à un jeu de société',p:'🎲',xp:5},{n:'Écouter de la musique',p:'🎵',xp:5},
+      {n:'Faire une construction',p:'🏗️',xp:5},{n:'Bricoler ou créer',p:'✂️',xp:5},
+    ],
+  },
+  ado:{
+    hygiene:[
+      {n:'Se brosser les dents (matin)',p:'🪥',xp:3},{n:'Prendre ma douche',p:'🚿',xp:5},
+      {n:'Se laver les cheveux',p:'🧴',xp:3},{n:'Se brosser les dents (soir)',p:'🪥',xp:3},
+      {n:'M\'habiller correctement',p:'👕',xp:3},{n:'Appliquer du déodorant',p:'🫧',xp:3},
+    ],
+    repas:[
+      {n:'Manger équilibré',p:'🥗',xp:3},{n:'Préparer mon repas',p:'🍳',xp:5},
+      {n:'Mettre/débarrasser la table',p:'🍽️',xp:3},{n:'Faire la vaisselle',p:'🍶',xp:5},
+      {n:'Cuisiner un snack',p:'🥪',xp:3},{n:'Boire assez d\'eau',p:'💧',xp:3},
+    ],
+    rangement:[
+      {n:'Ranger ma chambre',p:'🛏️',xp:5},{n:'Faire ma part de ménage',p:'🧹',xp:5},
+      {n:'Ranger mes affaires',p:'📋',xp:3},{n:'Sortir les poubelles',p:'🗑️',xp:5},
+      {n:'Passer l\'aspirateur',p:'🌀',xp:5},{n:'Nettoyer ma salle de bain',p:'🪥',xp:5},
+    ],
+    horscran:[
+      {n:'Lire 30 minutes',p:'📖',xp:5},{n:'Faire du sport 20 min',p:'🏋️',xp:5},
+      {n:'Écrire dans un journal',p:'📓',xp:5},{n:'Marcher dehors',p:'🚶',xp:5},
+      {n:'Écouter de la musique',p:'🎵',xp:5},{n:'Méditation 5 min',p:'🧘',xp:5},
+    ],
+  },
+  grand:{
+    hygiene:[
+      {n:'Hygiène corporelle complète',p:'🚿',xp:5},{n:'Hygiène dentaire',p:'🪥',xp:3},
+      {n:'Prendre soin de sa peau',p:'🧴',xp:3},{n:'Soins cheveux',p:'💆',xp:3},
+    ],
+    repas:[
+      {n:'Cuisiner un repas complet',p:'👨‍🍳',xp:8},{n:'Gérer mes courses',p:'🛒',xp:8},
+      {n:'Manger équilibré',p:'🥗',xp:3},{n:'Faire la vaisselle',p:'🍶',xp:5},
+    ],
+    rangement:[
+      {n:'Entretenir mon espace de vie',p:'🧹',xp:5},{n:'Faire sa lessive',p:'🧺',xp:8},
+      {n:'Démarche administrative',p:'📝',xp:8},{n:'Ranger et organiser',p:'📋',xp:5},
+    ],
+    horscran:[
+      {n:'Lire ou écouter un podcast',p:'📖',xp:5},{n:'Exercice physique 30 min',p:'🏃',xp:5},
+      {n:'Activité créative',p:'🎨',xp:5},{n:'Appeler un proche',p:'📞',xp:5},
+    ],
+  }
+};
+
+// ==========================================================
+// PLANNING DATA
+// ==========================================================
+const DAYS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const DAY_ICONS=['🌙','🌟','☀️','🌈','🎉','🏖️','😴'];
+
+const PLAN_ACTS_JUNIOR=[
+  {ico:'🎨',t:'Dessin / coloriage'},{ico:'🧩',t:'Puzzle'},{ico:'🏃',t:'Jouer dehors'},
+  {ico:'📚',t:'Lecture'},{ico:'🎲',t:'Jeu de société'},{ico:'🏗️',t:'Construction'},
+  {ico:'🎵',t:'Musique'},{ico:'🧘',t:'Moment calme'},{ico:'🍳',t:'Aide en cuisine'},
+  {ico:'🌿',t:'Jardin / nature'},{ico:'✂️',t:'Bricolage'},{ico:'🎭',t:'Jeu de rôle'},
+  {ico:'🚴',t:'Vélo'},{ico:'🎤',t:'Chanter'},{ico:'🖊️',t:'Écrire une histoire'},
+];
+const PLAN_ACTS_ADO=[
+  {ico:'🏋️',t:'Sport'},{ico:'📖',t:'Lecture'},{ico:'🎨',t:'Activité créative'},
+  {ico:'🧘',t:'Méditation'},{ico:'🚴',t:'Vélo / marche'},{ico:'🍳',t:'Cuisine'},
+  {ico:'🎮',t:'Jeu de société'},{ico:'📓',t:'Journal intime'},{ico:'🎵',t:'Musique'},
+  {ico:'📞',t:'Appeler un ami'},{ico:'🛠️',t:'Bricolage'},{ico:'🌍',t:'Découverte'},
+];
+const PLAN_ACTS_GRAND=[
+  {ico:'🏃',t:'Sport / running'},{ico:'📚',t:'Lecture / podcast'},{ico:'🍳',t:'Cuisiner'},
+  {ico:'🧘',t:'Yoga / méditation'},{ico:'📝',t:'Démarche perso'},{ico:'💼',t:'Formation'},
+  {ico:'🎨',t:'Créativité'},{ico:'🤝',t:'Sortie sociale'},{ico:'🏊',t:'Piscine'},
+  {ico:'📞',t:'Appels / famille'},{ico:'🌿',t:'Plein air'},{ico:'🎵',t:'Musique'},
+];
+
+// Default planning
+function defaultPlan(){
+  const d={};
+  DAYS.forEach((day,i)=>{
+    d[i]={
+      matin:[pickRandActs(i*2,2)].flat(),
+      soir:[pickRandActs(i*2+14,2)].flat(),
+    };
+  });
+  return d;
+}
+function pickRandActs(seed,n){
+  const acts=getPlanActs();const res=[];
+  for(let i=0;i<n;i++) res.push({...acts[(seed*3+i*7)%acts.length]});
+  return res;
+}
+function getPlanActs(){
+  if(S.age==='junior')return PLAN_ACTS_JUNIOR;
+  if(S.age==='grand')return PLAN_ACTS_GRAND;
+  return PLAN_ACTS_ADO;
+}
+
+// ==========================================================
+// TIPS / YT / RECS
+// ==========================================================
+const TIPS={
+  junior:[
+    {c:'emotion',tg:'Émotions',i:'😮‍💨',tx:'Quand tu es fâché(e), souffle fort 3 fois. Ça aide vraiment à se calmer !'},
+    {c:'hygiene',tg:'Hygiène',i:'🪥',tx:'Brosse tes dents 2 minutes. Compte jusqu\'à 120 ou mets une chanson !'},
+    {c:'social',tg:'Avec les autres',i:'🤝',tx:'Si quelqu\'un te fait de la peine, tu as le droit de le dire à un adulte.'},
+    {c:'orga',tg:'Organisation',i:'🎒',tx:'Prépare ton sac le soir pour éviter le stress du matin !'},
+    {c:'emotion',tg:'Émotions',i:'😊',tx:'Donne un nom à ce que tu ressens : joie, tristesse, peur, colère...'},
+    {c:'hygiene',tg:'Hygiène',i:'💧',tx:'Boire de l\'eau aide à rester concentré(e) et de bonne humeur !'},
+  ],
+  ado:[
+    {c:'emotion',tg:'Émotions',i:'😮‍💨',tx:'Technique 4-2-6 : inspire 4s, retiens 2s, expire 6s. Ça calme le système nerveux.'},
+    {c:'hygiene',tg:'Hygiène',i:'🚿',tx:'Une douche quotidienne aide à se sentir bien dans sa tête autant que dans son corps.'},
+    {c:'social',tg:'Relations',i:'🤝',tx:'"Non merci" est une réponse complète. Tu n\'as pas à te justifier.'},
+    {c:'orga',tg:'Organisation',i:'📋',tx:'Note tes 3 priorités du lendemain le soir. Le matin, commence par la plus difficile.'},
+    {c:'emotion',tg:'Émotions',i:'💬',tx:'Nommer ses émotions aide à les gérer. Suis-je fatigué(e), frustré(e) ou anxieux(se) ?'},
+    {c:'hygiene',tg:'Hygiène',i:'😴',tx:'Dormir 8h à ton âge c\'est vraiment important pour la concentration et l\'humeur.'},
+  ],
+  grand:[
+    {c:'emotion',tg:'Émotions',i:'🧠',tx:'Tes émotions sont une information, pas une faiblesse. Les reconnaître, c\'est les gérer.'},
+    {c:'hygiene',tg:'Santé',i:'🏃',tx:'30 min d\'activité physique par jour améliorent l\'humeur autant qu\'un antidépresseur.'},
+    {c:'social',tg:'Relations',i:'🤝',tx:'Poser des limites claires est un acte de respect envers soi et envers les autres.'},
+    {c:'orga',tg:'Organisation',i:'📅',tx:'Un agenda, même simple, libère l\'espace mental pour penser à autre chose.'},
+    {c:'emotion',tg:'Bien-être',i:'😴',tx:'La qualité du sommeil influence tout : humeur, concentration, relations.'},
+    {c:'social',tg:'Autonomie',i:'💼',tx:'Cuisiner, budgéter, faire ses démarches : chaque compétence de vie te rend plus libre.'},
+  ]
+};
+
+// Sélection fermée de chaînes : pas de recherche libre ni de réseau social dans l'application.
+const YT_CATEGORIES=[
+  {id:'nature',i:'🌿',t:'Nature et animaux',items:[
+    {t:'Une saison au zoo',s:'Découvrir les animaux et les soigneurs',u:'https://www.youtube.com/@Unesaisonauzoo'},
+    {t:'La minute nature',s:'Observer et comprendre la nature',u:'https://www.youtube.com/@LaMinuteNaturenet'}
+  ]},
+  {id:'culture',i:'🏛️',t:'Culture',items:[
+    {t:'C\'est pas sorcier',s:'Comprendre le monde simplement',u:'https://www.youtube.com/@Cestpassorcierofficiel/featured'},
+    {t:'1 jour, 1 question',s:'Une question expliquée en vidéo',u:'https://www.youtube.com/@1jour1questionFR'}
+  ]},
+  {id:'scolaire',i:'📚',t:'Scolaire',items:[
+    {t:'Pass-Education',s:'Apprendre et réviser',u:'https://www.youtube.com/@pass-education'},
+    {t:'Les petites têtes',s:'Des contenus éducatifs accessibles',u:'https://www.youtube.com/@lespetitestetes'},
+    {t:'Histoires et contes',s:'Écouter des histoires',u:'https://www.youtube.com/@HistoiresetContes'}
+  ]},
+  {id:'loisirs',i:'🎨',t:'Loisirs',items:[
+    {t:'Tête à modeler',s:'Activités créatives et bricolages',u:'https://www.youtube.com/@teteamodelerrofficiel'},
+    {t:'Histoires et contes',s:'Histoires à écouter tranquillement',u:'https://www.youtube.com/@HistoiresetContes'},
+    {t:'Canal+ Kids',s:'Programmes pour les enfants',u:'https://www.youtube.com/@canalpluskids'},
+    {t:'Mimi Soleil',s:'Chansons et activités',u:'https://www.youtube.com/@Mimi_Soleil'}
+  ]},
+  {id:'bienetre',i:'🧘',t:'Sport et bien-être',items:[
+    {t:'Petit Bambou',s:'Méditation guidée pour les enfants',u:'https://www.youtube.com/watch?v=NwJh4sj7YeU&list=PL8y4xkZFMDhsfhEdEPb0ZCaCHQ-kIdfn5'},
+    {t:'Bouger',s:'Quatre vidéos pour faire de l\'activité physique',view:'move'}
+  ]},
+  {id:'cuisine',i:'🥣',t:'Cuisine',items:[]}
+];
+
+const YT_MOVE=[
+  {t:'Bouger en musique',s:'Vidéo 1',u:'https://www.youtube.com/watch?v=C8EJJXoeTx0&list=PLnYedocnlX9V3xfnyk2hrqsgxChUSEeGL'},
+  {t:'Je bouge à la maison',s:'Vidéo 2',u:'https://www.youtube.com/watch?v=r4D40UMn4mo'},
+  {t:'Activité physique amusante',s:'Vidéo 3',u:'https://www.youtube.com/watch?v=537x7w1uStU'},
+  {t:'On se dépense',s:'Vidéo 4',u:'https://www.youtube.com/watch?v=m0P-L1ey2YA'}
+];
+
+const RECS={
+  ado:[
+    {i:'🍳',n:'Œufs brouillés',t:'8 min',st:['Casse 2 œufs dans un bol et bats-les','Fais fondre du beurre à feu doux','Verse les œufs et remue sans arrêter','Sale, poivre, mange sur du pain grillé !']},
+    {i:'🥗',n:'Salade rapide',t:'10 min',st:['Coupe une tomate et du concombre','Égoute une boîte de thon','Mélange avec de la salade verte','Assaisonne : huile, citron, sel, poivre']},
+  ],
+  grand:[
+    {i:'🍲',n:'Soupe express',t:'15 min',st:['Coupe carottes, pommes de terre, oignon','Fais revenir l\'oignon dans une casserole','Ajoute légumes + eau + cube bouillon','Mixe après 10 min de cuisson']},
+    {i:'🍱',n:'Riz sauté express',t:'12 min',st:['Fais cuire le riz','Bats 1 œuf, fais-le cuire en omelette','Mélange riz + œuf + sauce soja','Ajoute des légumes cuits']},
+  ]
+};
+
+// ==========================================================
+// VOCAB
+// ==========================================================
+const VOC_CATS=[
+  {id:'maison',label:'La maison',icon:'🏠'},{id:'cuisine',label:'Cuisine',icon:'🍽️'},
+  {id:'ecole',label:'L\'école',icon:'🏫'},{id:'transport',label:'Transports',icon:'🚌'},
+  {id:'corps',label:'Mon corps',icon:'🧍'},{id:'vetements',label:'Vêtements',icon:'👕'},
+  {id:'nourriture',label:'Nourriture',icon:'🥗'},{id:'animaux',label:'Animaux',icon:'🐶'},
+  {id:'emotions',label:'Émotions',icon:'😊'},
+];
+const VOC_WORDS={
+  maison:[{e:'🚪',w:'La porte',s:'On entre et on sort'},{e:'🪟',w:'La fenêtre',s:'Elle laisse passer la lumière'},{e:'🛋️',w:'Le canapé',s:'On s\'assoit pour se reposer'},{e:'📺',w:'La télé',s:'Pour regarder des émissions'},{e:'💡',w:'La lampe',s:'Elle éclaire la pièce'},{e:'🗑️',w:'La poubelle',s:'Pour jeter les déchets'},{e:'🧹',w:'Le balai',s:'Pour balayer le sol'},{e:'🪑',w:'La chaise',s:'On s\'assoit dessus'}],
+  cuisine:[{e:'🍳',w:'La poêle',s:'Pour faire cuire les aliments'},{e:'🥄',w:'La cuillère',s:'Pour manger la soupe'},{e:'🍴',w:'La fourchette',s:'Pour piquer les aliments'},{e:'🔪',w:'Le couteau',s:'Pour couper les aliments'},{e:'🥛',w:'Le verre',s:'Pour boire'},{e:'🍽️',w:'L\'assiette',s:'On met la nourriture dedans'},{e:'🧊',w:'Le frigo',s:'Il garde les aliments froids'},{e:'🚰',w:'Le robinet',s:'Pour avoir de l\'eau'}],
+  ecole:[{e:'📒',w:'Le cahier',s:'Pour écrire les leçons'},{e:'✏️',w:'Le crayon',s:'Pour écrire et dessiner'},{e:'📏',w:'La règle',s:'Pour tracer des lignes droites'},{e:'🗂️',w:'Le classeur',s:'Pour ranger les feuilles'},{e:'🎒',w:'Le cartable',s:'Pour porter ses affaires'},{e:'📖',w:'Le livre',s:'Pour lire et apprendre'},{e:'🖥️',w:'L\'ordinateur',s:'Pour travailler'},{e:'👩‍🏫',w:'Le professeur',s:'Il nous enseigne'}],
+  transport:[{e:'🚌',w:'Le bus',s:'Un grand véhicule pour voyager'},{e:'🚇',w:'Le métro',s:'Il roule sous la ville'},{e:'🚆',w:'Le train',s:'Il roule sur des rails'},{e:'🚗',w:'La voiture',s:'Pour se déplacer en famille'},{e:'🚲',w:'Le vélo',s:'On pédale pour avancer'},{e:'✈️',w:'L\'avion',s:'Pour voyager loin'},{e:'🚦',w:'Le feu rouge',s:'Rouge = stop, vert = avance'},{e:'🎫',w:'Le ticket',s:'Pour prendre le bus ou le train'}],
+  corps:[{e:'👁️',w:'L\'œil',s:'Pour voir'},{e:'👂',w:'L\'oreille',s:'Pour entendre'},{e:'👃',w:'Le nez',s:'Pour sentir et respirer'},{e:'👄',w:'La bouche',s:'Pour manger et parler'},{e:'🖐️',w:'La main',s:'Pour toucher et attraper'},{e:'🦵',w:'La jambe',s:'Pour marcher et courir'},{e:'💪',w:'Le bras',s:'Pour porter et attraper'},{e:'❤️',w:'Le cœur',s:'Il bat pour nous garder en vie'}],
+  vetements:[{e:'👕',w:'Le t-shirt',s:'Un haut à manches courtes'},{e:'👖',w:'Le pantalon',s:'Pour couvrir les jambes'},{e:'🧥',w:'Le manteau',s:'Pour avoir chaud dehors'},{e:'🧤',w:'Les gants',s:'Pour protéger les mains du froid'},{e:'🧣',w:'L\'écharpe',s:'Pour le cou'},{e:'🧦',w:'Les chaussettes',s:'On les met dans les chaussures'},{e:'👟',w:'Les baskets',s:'Des chaussures de sport'},{e:'👒',w:'Le chapeau',s:'Pour se protéger du soleil'}],
+  nourriture:[{e:'🍎',w:'La pomme',s:'Un fruit rouge ou vert'},{e:'🍌',w:'La banane',s:'Un fruit jaune et sucré'},{e:'🥕',w:'La carotte',s:'Un légume orange'},{e:'🥦',w:'Le brocoli',s:'Un légume vert'},{e:'🍞',w:'Le pain',s:'On le mange au petit-déjeuner'},{e:'🥚',w:'L\'œuf',s:'Vient de la poule'},{e:'🥛',w:'Le lait',s:'Une boisson blanche'},{e:'🍫',w:'Le chocolat',s:'Un aliment sucré'}],
+  animaux:[{e:'🐶',w:'Le chien',s:'Un animal domestique fidèle'},{e:'🐱',w:'Le chat',s:'Il ronronne quand il est content'},{e:'🐦',w:'L\'oiseau',s:'Il vole et chante'},{e:'🐇',w:'Le lapin',s:'Il a de grandes oreilles'},{e:'🐄',w:'La vache',s:'Elle donne du lait'},{e:'🐔',w:'La poule',s:'Elle pond des œufs'},{e:'🐘',w:'L\'éléphant',s:'Il a une longue trompe'},{e:'🦊',w:'Le renard',s:'Il est roux et rusé'}],
+  emotions:[{e:'😄',w:'Joyeux',s:'Quand on est très content'},{e:'😢',w:'Triste',s:'Quand on a de la peine'},{e:'😠',w:'En colère',s:'Quand quelque chose nous énerve'},{e:'😨',w:'Peur',s:'Quand quelque chose nous effraie'},{e:'😴',w:'Fatigué',s:'Quand on a besoin de dormir'},{e:'😊',w:'Content',s:'Quand on se sent bien'},{e:'🤔',w:'Pensif',s:'Quand on réfléchit'},{e:'😌',w:'Calme',s:'Serein et détendu'}],
+};
+
+// ==========================================================
+// STATE
+// ==========================================================
+let S={
+  name:'',age:'',animalId:null,xp:0,streak:1,
+  readerMode:'',hasChangedAnimal:false,
+  tasks:{},lastDay:'',lastTaskDay:'',dailyTaskIds:[],
+  weeklyKey:'',weeklySelected:[],weeklyDone:{},
+  mood:null,moodDay:'',weather:null,weatherDay:'',
+  tipIdx:0,plan:null,
+  ownedOutfits:{},ownedAnimalBgs:{},equippedAnimalBg:{},
+  ownedItems:[],equippedItems:[],equippedOutfit:'o1',
+  equippedBg:'bg1',ownedBgs:['bg1'],cardCollection:[0,2],shopTab:'tenues',cardTheme:'Paris',
+  encourDay:'',encourList:[],encourUsed:0,
+  vocHeard:{},books:[],
+};
+function save(){try{localStorage.setItem('auto_v13_accessible',JSON.stringify(S));}catch(e){}}
+function load(){try{const d=localStorage.getItem('auto_v13_accessible');if(d){S={...S,...JSON.parse(d)};return true;}}catch(e){}return false;}
+
+function getA(){return ANIMALS.find(a=>a.id===S.animalId)}
+function getLvl(){const a=getA();if(!a)return 0;const t=a.thr;if(S.xp>=t[3])return 3;if(S.xp>=t[2])return 2;if(S.xp>=t[1])return 1;return 0;}
+function getOutfitLvl(){// Which outfit (0-9) is currently max unlocked
+  return OUTFIT_XP.reduce((max,xpReq,i)=>S.xp>=xpReq?i:max,-1);
+}
+function getEquippedOutfitData(){
+  const outfits=OUTFITS[S.animalId]||[];
+  const idx=(S.equippedOutfit||1)-1;
+  return outfits[Math.min(idx,outfits.length-1)]||outfits[0];
+}
+function getLXP(){
+  const a=getA();if(!a)return{prev:0,next:30,pct:0,maxed:false};
+  const lv=getLvl();const prev=a.thr[lv]||0;const next=a.thr[lv+1]||250;
+  if(lv>=3)return{prev,next,pct:100,maxed:true};
+  return{prev,next,pct:Math.min(100,Math.round((S.xp-prev)/(next-prev)*100)),maxed:false};
+}
+function getActiveBg(){return BG_THEMES.find(b=>b.id===S.equippedBg)||BG_THEMES[0];}
+function animalDisplayEmoji(){
+  // Show emoji with equipped outfit icon overlay
+  const a=getA();if(!a)return '?';
+  return a.emoji;
+}
+function getTips(){return TIPS[S.age]||TIPS.ado}
+function todayKey(){return new Date().toDateString();}
+
+// ==========================================================
+// DAILY TASKS GENERATION
+// ==========================================================
+function genDailyTasks(){
+  const pool=TASK_POOLS[S.age]||TASK_POOLS.ado;
+  const today=todayKey();
+  const seed=new Date().getTime()%(1000*60*60*24);
+  function pickOne(arr,offset){return arr[(Math.floor(new Date().getTime()/86400000)+offset)%arr.length];}
+  const h=pickOne(pool.hygiene,0);
+  const r=pickOne(pool.repas,1);
+  const rng=pickOne(pool.rangement,2);
+  const hc=pickOne(pool.horscran,3);
+  return[
+    {id:1,...h,c:'hy',cl:'Hygiène'},
+    {id:2,...r,c:'re',cl:'Repas'},
+    {id:3,...rng,c:'or',cl:'Rangement'},
+    {id:4,...hc,c:'bi',cl:'Hors écrans'},
+  ];
+}
+function getDailyTasks(){
+  const today=todayKey();
+  if(S.lastTaskDay!==today||!S.dailyTaskIds||S.dailyTaskIds.length===0){
+    const tasks=genDailyTasks();
+    S.dailyTaskIds=tasks.map(t=>t.id);
+    S._dailyTasksCache=tasks;
+    S.lastTaskDay=today;
+    S.tasks={};
+    save();
+  }
+  return S._dailyTasksCache||genDailyTasks();
+}
+
+// ==========================================================
+// SOUNDS
+// ==========================================================
+function beep(t){
+  try{
+    const c=new(window.AudioContext||window.webkitAudioContext)();
+    if(t==='chk'){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(880,c.currentTime);o.frequency.exponentialRampToValueAtTime(1320,c.currentTime+.12);g.gain.setValueAtTime(.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.3);o.start(c.currentTime);o.stop(c.currentTime+.3);}
+    else if(t==='lvl'){[523,659,784,1047].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;const tm=c.currentTime+i*.13;g.gain.setValueAtTime(.12,tm);g.gain.exponentialRampToValueAtTime(.001,tm+.28);o.start(tm);o.stop(tm+.28);});}
+  }catch(e){}
+}
+
+// ==========================================================
+// SPEECH
+// ==========================================================
+let _activeSpeech=null;
+function speak(txt,btn){
+  if(_activeSpeech){window.speechSynthesis.cancel();_activeSpeech=null;document.querySelectorAll('.speak-btn,.voc-spk').forEach(b=>{b.classList.remove('speaking','sp');if(b.textContent==='⏹')b.textContent='🔊';});if(btn&&btn._lt===txt)return;}
+  const u=new SpeechSynthesisUtterance(txt);u.lang='fr-FR';u.rate=0.92;u.pitch=1.05;
+  u.onend=()=>{_activeSpeech=null;if(btn){btn.classList.remove('speaking');btn.textContent='🔊';}};
+  u.onerror=()=>{_activeSpeech=null;if(btn){btn.classList.remove('speaking');btn.textContent='🔊';}};
+  _activeSpeech=u;if(btn){btn.classList.add('speaking');btn.textContent='⏹';btn._lt=txt;}
+  window.speechSynthesis.speak(u);
+}
+
+// ==========================================================
+// TOAST & LEVELUP
+// ==========================================================
+let _tt;
+function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2500);}
+function showLU(lv){
+  const a=getA();
+  document.getElementById('lu-a').textContent=a.emoji;
+  document.getElementById('lu-t').textContent=a.name+' a évolué !';
+  document.getElementById('lu-s').textContent='Nouveau stade : '+a.labels[lv]+' !';
+  document.getElementById('lu').classList.add('show');beep('lvl');
+}
+function closeLU(){document.getElementById('lu').classList.remove('show');}
+
+// ==========================================================
+// ONBOARDING
+// ==========================================================
+let _pAge=null;
+function pickAge(ag,el){_pAge=ag;document.querySelectorAll('.age-opt').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');checkReady();}
+function checkReady(){const n=document.getElementById('inp-n').value.trim();document.getElementById('btn-st').disabled=!(n&&_pAge);}
+document.getElementById('inp-n').addEventListener('input',checkReady);
+function startApp(){const n=document.getElementById('inp-n').value.trim();if(!n||!_pAge)return;S.name=n;S.age=_pAge;save();showScr('sc-anim');renderAnimChoice();}
+
+// ==========================================================
+// ANIMAL CHOICE
+// ==========================================================
+let _pAnim=null;
+function renderAnimChoice(){
+  document.getElementById('ag').innerHTML=ANIMALS.map(a=>`<div class="ac" onclick="pickAnim('${a.id}',this)" id="ac-${a.id}">
+    <div style="display:flex;justify-content:center;height:124px;align-items:center">${portraitImg(a.id,112,112)}</div>
+    <div class="an">${a.name}</div>
+  </div>`).join('');
+}
+function pickAnim(id,el){_pAnim=id;document.querySelectorAll('.ac').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');const btn=document.getElementById('btn-cf');btn.disabled=false;btn.style.opacity='1';}
+function confirmAnim(){if(!_pAnim)return;S.animalId=_pAnim;if(!S.plan)S.plan=defaultPlan();save();showScr('sc-app');renderAll();}
+
+// ==========================================================
+// SCREENS
+// ==========================================================
+function showScr(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='flex';}
+
+// ==========================================================
+// DAILY RESET
+// ==========================================================
+function checkDaily(){
+  const today=todayKey();
+  if(S.lastDay&&S.lastDay!==today){
+    const hadDone=Object.keys(S.tasks).length>0;
+    S.streak=hadDone?(S.streak||1)+1:1;
+    S.mood=null;S.moodDay='';S.weather=null;S.weatherDay='';
+    if(S.encourDay!==today){S.encourDay=today;S.encourList=[];S.encourUsed=0;}
+  }
+  if(!S.lastDay||S.lastDay!==today){if(S.encourDay!==today){S.encourDay=today;S.encourList=[];S.encourUsed=0;}}
+  S.lastDay=today;save();
+}
+
+// ==========================================================
+// TOGGLE TASK
+// ==========================================================
+function toggleTask(id){
+  const tasks=getDailyTasks();const t=tasks.find(x=>x.id===id);if(!t)return;
+  const was=!!S.tasks[id];const prevLv=getLvl();
+  if(was){delete S.tasks[id];S.xp=Math.max(0,S.xp-t.xp);}else{S.tasks[id]=true;S.xp+=t.xp;}
+  const newLv=getLvl();save();
+  document.querySelectorAll('[data-tid="'+id+'"]').forEach(card=>{
+    card.classList.toggle('done',!was);
+    const cb=card.querySelector('.tcb');if(cb)cb.className='tcb'+((!was)?' on':'');
+    if(!was){card.classList.add('pop');setTimeout(()=>card.classList.remove('pop'),400);}
+  });
+  updateHomeXP();
+  if(!was){if(newLv>prevLv){showLU(newLv);}else{beep('chk');toast('+'+t.xp+' XP ! 🌟');}}
+}
+
+function taskHTML(t){
+  const done=!!S.tasks[t.id];
+  const bg={hy:'#E1F5EE',or:'#FAEEDA',bi:'#EEF2FF',re:'#EAF3DE',sm:'#EBF4FF'}[t.c]||'#f0f0f0';
+  return`<div class="tc${done?' done':''}" data-tid="${t.id}" onclick="toggleTask(${t.id})"><div class="tp-box" style="background:${bg}">${t.p}</div><div class="tb2"><div class="tn">${t.n}</div><div class="tcat">${t.cl}</div></div><div class="tpts">+${t.xp} XP</div><div class="tcb${done?' on':''}"><div class="tck"></div></div></div>`;
+}
+
+// ==========================================================
+// HOME
+// ==========================================================
+function renderHome(){
+  const a=getA();if(!a)return;
+  const lv=getLvl();const lxp=getLXP();
+  const done=Object.keys(S.tasks).length;
+  const tasks=getDailyTasks();
+  const today=todayKey();
+  const bg=getActiveBg();
+
+  // Weather
+  const WEATHERS=[{i:'☀️',l:'Soleil'},{i:'🌤️',l:'Nuageux'},{i:'🌧️',l:'Pluie'},{i:'⛈️',l:'Orage'},{i:'❄️',l:'Neige'}];
+  const selW=S.weatherDay===today?S.weather:null;
+  const weatherHTML=S.age==='junior'?`
+    <div class="weather-card">
+      <div class="wth-title">⛅ La météo dehors</div>
+      <div class="wth-row">${WEATHERS.map((w,i)=>`<div class="wth-btn${selW===i?' sel':''}" onclick="setWeather(${i})"><div class="wth-ico">${w.i}</div><div class="wth-lbl">${w.l}</div></div>`).join('')}</div>
+    </div>`:'';
+
+  // Mood
+  const MOODS=[{i:'😄',l:'Très content'},{i:'😊',l:'Content'},{i:'😐',l:'Neutre'},{i:'😴',l:'Fatigué'},{i:'😢',l:'Triste'},{i:'😠',l:'En colère'}];
+  const selM=S.moodDay===today?S.mood:null;
+  const moodHTML=S.age==='junior'?`
+    <div class="mood-card">
+      <div class="mood-title">😊 Comment tu te sens ?</div>
+      <div class="mood-row">${MOODS.map((m,i)=>`<div class="mood-btn${selM===i?' sel':''}" onclick="setMood(${i})"><div class="mood-ico">${m.i}</div><div class="mood-lbl">${m.l}</div></div>`).join('')}</div>
+    </div>`:'';
+
+  document.getElementById('pg-home').innerHTML=`
+    <div class="gh" style="background:${bg.gradient}">
+      <div class="gh-anim" style="width:90px;height:75px;flex-shrink:0">${animImg(a.id,(S.equippedOutfit||1)-1,90,75,'border-radius:10px;overflow:hidden')}</div>
+      <div class="gh-r">
+        <div class="gh-hi">Bonjour ${S.name} !</div>
+        <div class="gh-st">${a.name} · ${a.labels[lv]}</div>
+        <div class="xb"><div class="xf" id="hxpf" style="width:${lxp.pct}%"></div></div>
+        <div class="xl"><span>${S.xp} XP</span><span>${lxp.maxed?'Max !':'→ '+lxp.next+' XP'}</span></div>
+      </div>
+    </div>
+    <div class="sr">
+      <div class="sb"><div class="si">🔥</div><div><div class="sv">${S.streak}</div><div class="sl">jours de suite</div></div></div>
+      <div class="sb"><div class="si">✅</div><div><div class="sv">${done}/4</div><div class="sl">tâches du jour</div></div></div>
+    </div>
+    ${weatherHTML}
+    ${moodHTML}
+    <div class="sec">Mes tâches du jour</div>
+    ${tasks.map(taskHTML).join('')}`;
+}
+
+function setWeather(i){S.weather=i;S.weatherDay=todayKey();save();renderHome();}
+function setMood(i){S.mood=i;S.moodDay=todayKey();save();renderHome();}
+function updateHomeXP(){const lxp=getLXP();const bar=document.getElementById('hxpf');if(bar)bar.style.width=lxp.pct+'%';}
+
+// ==========================================================
+// TASKS PAGE (full list)
+// ==========================================================
+function renderTasks(){
+  const pool=TASK_POOLS[S.age]||TASK_POOLS.ado;
+  const daily=getDailyTasks();
+  document.getElementById('pg-tasks').innerHTML=`
+    <div style="background:var(--pl);border-radius:var(--rsm);padding:10px 12px;font-size:12px;font-weight:700;color:var(--p);margin-bottom:14px">🔄 Tes 4 tâches du jour changent chaque matin !</div>
+    <div class="sec">Tâches du jour</div>
+    ${daily.map(taskHTML).join('')}`;
+}
+
+// ==========================================================
+// PLANNING
+// ==========================================================
+// ==========================================================
+// PLANNING VISUEL
+// ==========================================================
+const TILE_COLORS=['#EBF4FF','#E8F8F0','#FEF5E7','#F5EEF8','#FDEDEC','#EEF2FF','#E8F8F0','#FAEEDA','#EBF4FF','#E1F5EE','#F5EEF8','#EAF3DE','#FDEDEC','#EEF2FF','#FEF5E7'];
+
+function renderPlan(){
+  if(!S.plan)S.plan=defaultPlan();
+  const todayIdx=new Date().getDay();const todayAdj=(todayIdx+6)%7;
+  const DAYS_SHORT=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+
+  const cols=DAYS.map((day,i)=>{
+    const isToday=i===todayAdj;
+    const matin=S.plan[i]?.matin||[];
+    const soir=S.plan[i]?.soir||[];
+    const maCards=matin.map((act,j)=>{
+      const ci=((i*4+j*3))%TILE_COLORS.length;
+      return`<div class="plan-tile" style="background:${TILE_COLORS[ci]}" onclick="openPlanEdit(${i},'matin',${j})">
+        <span class="plan-tile-ico">${act.ico}</span>
+        <span class="plan-tile-txt">${act.t}</span>
+        <span class="plan-tile-edit">✏️ changer</span>
+      </div>`;
+    }).join('');
+    const soCards=soir.map((act,j)=>{
+      const ci=((i*4+j*3+2))%TILE_COLORS.length;
+      return`<div class="plan-tile" style="background:${TILE_COLORS[ci]}" onclick="openPlanEdit(${i},'soir',${j})">
+        <span class="plan-tile-ico">${act.ico}</span>
+        <span class="plan-tile-txt">${act.t}</span>
+        <span class="plan-tile-edit">✏️ changer</span>
+      </div>`;
+    }).join('');
+    return`<div class="plan-col${isToday?' today':''}">
+      <div class="plan-col-hd">
+        <div class="plan-col-ico">${DAY_ICONS[i]}</div>
+        <div class="plan-col-day">${DAYS_SHORT[i]}</div>
+        ${isToday?'<div class="plan-col-today-badge">Aujourd\'hui</div>':''}
+      </div>
+      <div class="plan-slot-hd">🌅 Matin</div>
+      <div class="plan-cards-area">${maCards}</div>
+      <div class="plan-divider"></div>
+      <div class="plan-slot-hd">🌆 Soir</div>
+      <div class="plan-cards-area">${soCards}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('pg-plan').innerHTML=`
+    <div style="font-size:13px;color:var(--t2);margin-bottom:12px;font-weight:700;line-height:1.5">📅 Appuie sur une activité pour la changer !</div>
+    <div class="plan-week"><div class="plan-grid">${cols}</div></div>`;
+}
+
+let _editDay,_editSlot,_editIdx;
+function openPlanEdit(day,slot,idx){
+  _editDay=day;_editSlot=slot;_editIdx=idx;
+  const slotLabel=slot==='matin'?'🌅 Matin':'🌆 Soir';
+  document.getElementById('sp-plan-title').textContent=DAYS[day]+' · '+slotLabel;
+  const acts=getPlanActs();
+  document.getElementById('plan-edit-choices').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+    ${acts.map((a,i)=>{
+      const ci=i%TILE_COLORS.length;
+      return`<div onclick="setPlanAct(${i})" style="background:${TILE_COLORS[ci]};border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .15s;active:scale(.95)" ontouchstart="this.style.transform='scale(.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:30px;margin-bottom:6px">${a.ico}</div>
+        <div style="font-size:11px;font-weight:800;color:var(--text);line-height:1.3">${a.t}</div>
+      </div>`;
+    }).join('')}
+    </div>`;
+  openSub('sp-plan-edit');
+}
+function setPlanAct(idx){
+  const acts=getPlanActs();
+  S.plan[_editDay][_editSlot][_editIdx]={...acts[idx]};
+  save();closeSub('sp-plan-edit');renderPlan();
+}
+
+// ==========================================================
+// ANIMAL / BOUTIQUE PAGE — tenues + boutique raretés
+// ==========================================================
+function renderAmi(){
+  const a=getA();if(!a)return;
+  const lv=getLvl();const lxp=getLXP();
+  const done=Object.keys(S.tasks).length;
+  const bg=getActiveBg();
+  const today=todayKey();
+  const canGen=S.encourDay!==today||S.encourUsed<1;
+  const listToday=S.encourDay===today?S.encourList:[];
+  const outfitLvl=getOutfitLvl();
+  const equippedData=getEquippedOutfitData();
+  const outfits=OUTFITS[S.animalId]||[];
+
+  // --- TENUES ---
+  const tenuesHTML=outfits.map((o,i)=>{
+    const xpReq=OUTFIT_XP[i]||0;
+    const unlocked=S.xp>=xpReq;
+    const equipped=(S.equippedOutfit||1)===o.id;
+    return`<div onclick="${unlocked?'equipOutfit('+o.id+')':''}" style="border-radius:10px;padding:6px 4px;text-align:center;cursor:${unlocked?'pointer':'not-allowed'};background:${equipped?'var(--pl)':unlocked?'white':'#f0f0f0'};border:2px solid ${equipped?'var(--p)':'transparent'};opacity:${unlocked?1:0.38};box-shadow:0 1px 5px rgba(0,0,0,.07);transition:all .2s;position:relative">
+      ${unlocked?'':'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;z-index:1">🔒</div>'}
+      <div style="display:flex;justify-content:center;overflow:hidden;border-radius:6px">${animImg(a.id,i,62,50)}</div>
+      <div style="font-size:8px;font-weight:800;color:var(--text);line-height:1.2;margin-top:2px">${o.name}</div>
+      <div style="font-size:8px;margin-top:1px;color:${unlocked?'var(--green)':'var(--t2)'};font-weight:700">${unlocked?(equipped?'✓ Portée':'Débloq.'):'🔒 '+xpReq+' XP'}</div>
+    </div>`;
+  }).join('');
+
+  // --- FONDS D'ÉCRAN ---
+  const bgHTML=BG_THEMES.map(theme=>{
+    const owned=S.ownedBgs.includes(theme.id)||theme.price===0;
+    const equipped=S.equippedBg===theme.id;
+    const canBuy=S.xp>=theme.price;
+    return`<div onclick="buyOrEquipBg('${theme.id}',${theme.price})" style="border-radius:12px;height:56px;cursor:pointer;background:${theme.gradient};display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid ${equipped?'white':'transparent'};box-shadow:${equipped?'0 0 0 2px var(--p)':'var(--sh)'};opacity:${!owned&&!canBuy?.45:1};transition:all .2s;padding:4px">
+      <div style="font-size:10px;font-weight:900;color:white;text-shadow:0 1px 3px rgba(0,0,0,.5);text-align:center">${theme.name}</div>
+      <div style="font-size:9px;color:rgba(255,255,255,.85);margin-top:1px">${owned||theme.price===0?(equipped?'✓ Actif':'Équiper'):('🔒 '+theme.price+' XP')}</div>
+    </div>`;
+  }).join('');
+
+  // --- BOUTIQUE PAR RARÉTÉ ---
+  const rarities=['commun','rare','epique','legendaire'];
+  const rarityBg={commun:'#F5F5F5',rare:'#E3F2FD',epique:'#F3E5F5',legendaire:'#FFF8E1'};
+  const shopByRarity=rarities.map(r=>{
+    const items=SHOP_ITEMS.filter(i=>i.rarity===r);
+    const color=RARITY_COLORS[r];
+    const itemsHTML=items.map(item=>{
+      const owned=S.ownedItems.includes(item.id);
+      const equipped=S.equippedItems.includes(item.id);
+      const canBuy=S.xp>=item.price&&!owned;
+      const isEvent=item.event==='evenement';
+      return`<div onclick="${owned?'toggleEquip('+item.id+')':canBuy?'buyItem('+item.id+')':''}" style="border-radius:10px;padding:8px 5px;text-align:center;background:${equipped?'var(--pl)':owned?'white':'#fafafa'};border:2px solid ${equipped?'var(--p)':owned?color:'transparent'};opacity:${!owned&&!canBuy?.4:1};cursor:${owned||canBuy?'pointer':'not-allowed'};box-shadow:0 1px 5px rgba(0,0,0,.06);position:relative">
+        ${isEvent?'<div style="position:absolute;top:2px;right:2px;font-size:8px;background:#FF9800;color:white;border-radius:4px;padding:1px 3px;font-weight:900">✦</div>':''}
+        <div style="font-size:26px;margin-bottom:3px">${item.ico}</div>
+        <div style="font-size:9px;font-weight:800;color:var(--text);line-height:1.2">${item.name}</div>
+        <div style="font-size:9px;margin-top:2px;font-weight:700;color:${equipped?'var(--p)':owned?'var(--green)':canBuy?color:'var(--t3)'}">${equipped?'✓ Équipé':owned?'Retirer':'🪙 '+item.price}</div>
+      </div>`;
+    }).join('');
+    return`<div style="background:${rarityBg[r]};border-radius:var(--r);padding:12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:14px">${RARITY_STARS[r]}</span>
+        <span style="font-size:13px;font-weight:900;color:${color};text-transform:uppercase;letter-spacing:.5px">${RARITY_LABELS[r]}</span>
+        <span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--t2)">${items.filter(i=>S.ownedItems.includes(i.id)).length}/${items.length}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">${itemsHTML}</div>
+    </div>`;
+  }).join('');
+
+  // --- ENCOURAGEMENTS IA ---
+  let encourHTML=listToday.length>0
+    ?`<div class="encour-list">${listToday.map(e=>`<div class="encour-item"><div class="encour-txt">${e}</div><button class="speak-btn" onclick="speakE(this,'${e.replace(/'/g,"\'").replace(/"/g,"&quot;")}')">🔊</button></div>`).join('')}</div>`
+    :`<div style="text-align:center;padding:14px;color:var(--t2);font-size:13px;font-weight:700">Génère tes encouragements du jour !</div>`;
+
+  document.getElementById('pg-ami').innerHTML=`
+    <!-- HERO -->
+    <div class="ah" style="background:${bg.gradient}">
+      <div class="ah-bg-txt">${a.emoji}</div>
+      <div style="position:relative;z-index:1;text-align:center">
+        <div style="display:flex;justify-content:center;animation:float 3s ease-in-out infinite">${animImg(a.id,(S.equippedOutfit||1)-1,140,115,'border-radius:12px;overflow:hidden')}</div>
+        <div style="font-size:20px;margin-top:4px;display:flex;justify-content:center;gap:4px;flex-wrap:wrap">${S.equippedItems.map(id=>`<div style="border-radius:6px;overflow:hidden">${accImg(id,32,32)}</div>`).join('')}</div>
+      </div>
+      <div class="ah-nm" style="color:white">${a.name}</div>
+      <div class="ah-st" style="color:rgba(255,255,255,.8)">${a.labels[lv]}</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="st2">
+      <div class="stb"><div class="stn">${S.xp}</div><div class="stl">🪙 XP disponibles</div></div>
+      <div class="stb"><div class="stn">${done}</div><div class="stl">✅ Tâches faites</div></div>
+    </div>
+
+    <!-- ÉVOLUTION -->
+    <div class="et">
+      <div class="el">Évolution de ${a.name}</div>
+      <div class="es">${a.labels.map((lbl,i)=>`
+        <div class="est ${i===lv?'cur':''} ${i>lv?'lk':''}">
+          <div style="display:flex;justify-content:center;overflow:hidden;border-radius:6px;transform:scale(${i===lv?1.1:0.85});transition:transform .3s">${animImg(a.id,0,40,32)}</div>
+          <div class="exl" style="font-size:8px">${a.thr[i]} XP</div>
+          <div class="exl">${lbl.split(' ')[0]}</div>
+        </div>${i<3?'<div class="ea">›</div>':''}`).join('')}
+      </div>
+      <div class="pb"><div class="pf" style="width:${lxp.pct}%"></div></div>
+      <div class="pr"><span>${S.xp} XP</span><span>${lxp.maxed?'Maximum !':'→ '+lxp.next+' XP'}</span></div>
+    </div>
+
+    <!-- TENUES -->
+    <div style="background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px">
+      <div style="font-size:13px;font-weight:900;margin-bottom:3px">👗 Tenues de ${a.name}</div>
+      <div style="font-size:11px;color:var(--t2);margin-bottom:10px">10 tenues à débloquer en gagnant des XP !</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">${tenuesHTML}</div>
+    </div>
+
+    <!-- FONDS D'ÉCRAN -->
+    <div style="background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px">
+      <div style="font-size:13px;font-weight:900;margin-bottom:3px">🖼️ Fonds d&#39;écran</div>
+      <div style="font-size:11px;color:var(--t2);margin-bottom:10px">Change l'ambiance de ton appli</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${bgHTML}</div>
+    </div>
+
+    <!-- BOUTIQUE -->
+    <div style="background:white;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px">
+      <div style="font-size:13px;font-weight:900;margin-bottom:2px">🛍️ Boutique accessoires</div>
+      <div style="font-size:11px;color:var(--t2);margin-bottom:4px">Tu as 🪙 ${S.xp} XP · Les ✦ sont des accessoires événement !</div>
+      <div style="background:var(--pl);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--p);font-weight:700;margin-bottom:12px">💡 Achète avec tes XP ou gagne des accessoires lors d&#39;événements spéciaux !</div>
+      ${shopByRarity}
+    </div>
+
+    <!-- ENCOURAGEMENTS IA -->
+    <div class="ai-card">
+      <div class="ai-hd"><div class="ai-ic">${a.emoji}</div><div><div class="ai-title">${a.name} te parle !</div><div class="ai-sub">5 encouragements · voix activée 🔊</div></div></div>
+      <div id="encour-wrap">${encourHTML}</div>
+      <button class="ai-btn" id="encour-btn" onclick="genEncour()" ${!canGen?'disabled':''}>
+        ${canGen?'✨ Mes encouragements du jour':'✅ Déjà générés aujourd&#39;hui'}
+      </button>
+    </div>
+    <button class="btn sec" onclick="changeAnim()">Changer de compagnon</button>`;
+}
+
+function speakE(btn,txt){speak(txt,btn);}
+
+function buyOrEquipBg(id,price){
+  const owned=S.ownedBgs.includes(id)||price===0;
+  if(!owned){if(S.xp<price){toast('Pas assez de XP ! Il faut '+price+' XP 😅');return;}S.ownedBgs.push(id);S.xp-=price;toast("Fond décran débloqué ! 🎉");}
+  S.equippedBg=id;save();renderAmi();renderHome();
+}
+function equipOutfit(id){
+  S.equippedOutfit=id;save();renderAmi();renderHome();toast('Tenue changée ! 👗');
+}
+function buyItem(id){
+  const item=SHOP_ITEMS.find(x=>x.id===id);if(!item)return;
+  if(S.xp<item.price){toast('Pas assez de XP ! Il faut '+item.price+' XP 😅');return;}
+  if(!S.ownedItems.includes(id)){S.ownedItems.push(id);S.xp-=item.price;}
+  if(!S.equippedItems.includes(id))S.equippedItems.push(id);
+  save();renderAmi();toast(item.ico+' '+item.name+' acheté ! 🎉');
+}
+function toggleEquip(id){
+  const equipped=S.equippedItems.includes(id);
+  if(equipped){S.equippedItems=S.equippedItems.filter(x=>x!==id);toast('Accessoire retiré');}
+  else{if(S.equippedItems.length>=5){toast('Maximum 5 accessoires équipés !');return;}S.equippedItems.push(id);const item=SHOP_ITEMS.find(x=>x.id===id);toast((item?.ico||'')+'  Équipé !');}
+  save();renderAmi();
+}
+// Give event item to player (called on special events)
+function giveEventItem(id){
+  const item=SHOP_ITEMS.find(x=>x.id===id);if(!item)return;
+  if(!S.ownedItems.includes(id)){S.ownedItems.push(id);save();toast('🎁 Accessoire événement débloqué : '+item.ico+' '+item.name+' !');}
+}
+
+
+
+function buyOrEquipBg(id,price){
+  const owned=S.ownedBgs.includes(id)||price===0;
+  if(!owned){if(S.xp<price){toast('Pas assez de XP ! 😅');return;}S.ownedBgs.push(id);S.xp-=price;toast("Fond décran débloqué ! 🎉");}
+  S.equippedBg=id;save();renderAmi();renderHome();
+}
+function buyOrEquipOutfit(id,price){
+  const owned=S.ownedItems.includes(id)||price===0;
+  if(!owned){if(S.xp<price){toast('Pas assez de XP ! Il faut '+price+' XP 😅');return;}S.ownedItems.push(id);S.xp-=price;toast('Tenue débloquée ! 🎉');}
+  S.equippedOutfit=id;save();renderAmi();
+}
+function buyOrEquip(id,price){
+  const owned=S.ownedItems.includes(id);
+  const equipped=S.equippedItems.includes(id);
+  if(equipped){S.equippedItems=S.equippedItems.filter(x=>x!==id);save();renderAmi();return;}
+  if(!owned){if(S.xp<price){toast('Pas assez de XP ! Il faut '+price+' XP 😅');return;}S.ownedItems.push(id);S.xp-=price;toast('Accessoire acheté ! 🎉');}
+  S.equippedItems.push(id);save();renderAmi();
+}
+
+async function genEncour(){
+  const btn=document.getElementById('encour-btn');const wrap=document.getElementById('encour-wrap');
+  if(!btn||!wrap)return;btn.disabled=true;
+  wrap.innerHTML=`<div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div>`;
+  const a=getA();const done=Object.keys(S.tasks).length;
+  const ageLabel={junior:'enfant de 7-11 ans',ado:'adolescent de 12-15 ans',grand:'jeune adulte de 16-20 ans'}[S.age]||'jeune';
+  const prompt=`Tu es ${a?a.name:'un animal compagnon'} (${a?a.emoji:'🌟'}), compagnon bienveillant dans une appli d'autonomie pour ${ageLabel} en situation de handicap. Tu parles DIRECTEMENT à ${S.name}. Génère exactement 5 courtes paroles d'encouragement chaleureuses et motivantes. Chaque message fait 1-2 phrases max, en français simple et accessible. ${S.name} a fait ${done} tâches aujourd-hui et a ${S.xp} XP. Réponds UNIQUEMENT avec un tableau JSON valide : ["message1","message2","message3","message4","message5"]`;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    const raw=data.content?.find(b=>b.type==='text')?.text||'[]';
+    const list=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    if(Array.isArray(list)&&list.length>0){
+      S.encourList=list;S.encourDay=todayKey();S.encourUsed=1;save();
+      wrap.innerHTML=`<div class="encour-list">${list.map(e=>`<div class="encour-item"><div class="encour-txt">${e}</div><button class="speak-btn" onclick="speakE(this,'${e.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">🔊</button></div>`).join('')}</div>`;
+      btn.textContent='✅ Déjà générés aujourd&#39;hui';
+    }else throw new Error();
+  }catch(e){
+    wrap.innerHTML=`<div style="text-align:center;padding:14px;color:var(--coral);font-size:12px;font-weight:700">Connexion internet nécessaire pour les encouragements IA.</div>`;
+    btn.disabled=false;btn.textContent='✨ Réessayer';
+  }
+}
+function changeAnim(){if(!confirm('Changer de compagnon ?'))return;S.animalId=null;S.xp=0;S.tasks={};S.equippedOutfit=1;S.equippedItems=[];save();showScr('sc-anim');renderAnimChoice();}
+
+// ==========================================================
+// V11 — COMPAGNON, BOUTIQUE, INVENTAIRE ET CARTES
+// ==========================================================
+const CARD_THEMES=['Paris','Transports','Maison','Stage','Métiers','École','Loisirs'];
+const CARD_NAMES=['Au restaurant','Au cinéma','À Paris','À la piscine','À la maison','Dans sa chambre','Au parc','Dans le RER','Dans le bus','À la bibliothèque'];
+const CARD_POS=[[0,0],[1,0],[2,0],[3,0],[4,0],[0,1],[1,1],[2,1],[3,1],[4,1]];
+let previewOutfit=1;
+
+function normalizedOutfit(){
+  const n=Number(S.equippedOutfit);
+  return Number.isFinite(n)&&n>=1&&n<=10?n:1;
+}
+function itemStatus(item){
+  if(S.equippedItems.includes(item.id))return['Équipé','equipped'];
+  if(S.ownedItems.includes(item.id))return['Possédé','owned'];
+  if(S.xp>=item.price)return['Débloqué',''];
+  return['Verrouillé',''];
+}
+function renderCompanion(){
+  const a=getA();if(!a)return;
+  const bg=getActiveBg(),lv=getLvl(),outfit=normalizedOutfit();
+  document.getElementById('pg-ami').innerHTML=`
+    <div class="page-head"><div><div class="page-title">Mon compagnon</div><div class="page-sub">Un repère calme pour voir ta progression.</div></div><div class="xp-pill">${S.xp} XP</div></div>
+    <div class="ah" style="background:${bg.gradient}">
+      <div style="display:flex;justify-content:center">${animImg(a.id,outfit-1,180,145,'border-radius:16px;overflow:hidden')}</div>
+      <div class="ah-nm" style="color:white">${a.name}</div><div class="ah-st" style="color:white">${a.labels[lv]}</div>
+    </div>
+    <div class="st2"><div class="stb"><div class="stn">${S.xp}</div><div class="stl">XP disponibles</div></div><div class="stb"><div class="stn">${normalizedOutfit()}/10</div><div class="stl">Tenue portée</div></div></div>
+    <button class="btn" onclick="goTab('shop')">Choisir une tenue</button>
+    <button class="btn sec" onclick="changeAnim()">Changer de compagnon</button>`;
+}
+function switchShopTab(tab){S.shopTab=tab;save();renderShop();}
+function renderShop(){
+  const a=getA();if(!a)return;
+  const tab=S.shopTab||'tenues';
+  const tabs=['tenues','accessoires','fonds','cartes'];
+  const labels={tenues:'Tenues',accessoires:'Accessoires',fonds:'Fonds d’écran',cartes:'Cartes'};
+  let content='';
+  if(tab==='tenues'){
+    previewOutfit=Math.max(1,Math.min(10,previewOutfit||normalizedOutfit()));
+    const outfits=OUTFITS[a.id]||[];
+    content=`<div class="outfit-layout">
+      <div class="outfit-preview">${animImg(a.id,previewOutfit-1,220,175,'border-radius:16px;overflow:hidden')}
+        <div style="font-size:16px;font-weight:900;margin-top:6px">${outfits[previewOutfit-1]?.name||''}</div>
+        <div class="page-sub">${S.xp>=OUTFIT_XP[previewOutfit-1]?'Disponible':'Se débloque à '+OUTFIT_XP[previewOutfit-1]+' XP'}</div>
+        <button class="product-action" ${S.xp<OUTFIT_XP[previewOutfit-1]?'disabled':''} onclick="equipOutfitV11(${previewOutfit})">${normalizedOutfit()===previewOutfit?'Tenue portée':'Porter cette tenue'}</button>
+      </div>
+      <div class="outfit-list">${outfits.map((o,i)=>`<button class="outfit-choice ${previewOutfit===i+1?'on':''} ${S.xp<OUTFIT_XP[i]?'locked':''}" onclick="previewOutfit=${i+1};renderShop()">
+        ${animImg(a.id,i,82,65,'border-radius:8px;overflow:hidden')}<div class="product-name" style="min-height:0">${o.name}</div><div class="page-sub">${S.xp>=OUTFIT_XP[i]?'Disponible':OUTFIT_XP[i]+' XP'}</div></button>`).join('')}</div>
+    </div>`;
+  }else if(tab==='accessoires'){
+    content=`<div class="store-grid">${SHOP_ITEMS.map(item=>{
+      const st=itemStatus(item),owned=S.ownedItems.includes(item.id),equipped=S.equippedItems.includes(item.id);
+      return`<article class="product-card ${item.rarity} ${equipped?'equipped':''}">
+        <div class="product-visual">${accImg(item.id,88,88)}</div><div class="product-name">${item.name}</div>
+        <span class="rarity-tag ${item.rarity}">${RARITY_LABELS[item.rarity]}</span> <span class="status-tag ${st[1]}">${st[0]}</span>
+        <button class="product-action" ${!owned&&S.xp<item.price?'disabled':''} onclick="${owned?'toggleEquipV11('+item.id+')':'buyItemV11('+item.id+')'}">${equipped?'Retirer':owned?'Équiper':item.price+' XP'}</button>
+      </article>`}).join('')}</div>`;
+  }else if(tab==='fonds'){
+    content=`<div class="store-grid">${BG_THEMES.map(theme=>`<article class="product-card ${S.equippedBg===theme.id?'equipped':''}"><div class="product-visual" style="background:${theme.gradient};color:white;font-weight:900">${theme.name}</div><div class="product-name">${theme.label}</div><button class="product-action" onclick="buyOrEquipBgV11('${theme.id}',${theme.price})">${S.equippedBg===theme.id?'Actif':S.ownedBgs.includes(theme.id)?'Utiliser':theme.price+' XP'}</button></article>`).join('')}</div>`;
+  }else{
+    content=S.age==='junior'?`<div class="card"><div class="page-title" style="font-size:17px">Cartes disponibles dès 12 ans</div><div class="page-sub">Cette section reste volontairement masquée pour les profils 7-11 ans.</div></div>`:`<div class="card"><div class="page-title" style="font-size:17px">Collection calme</div><div class="page-sub">Les cartes se gagnent avec des défis. Aucun achat aléatoire, aucun classement.</div><button class="btn" onclick="goTab('cards')">Voir ma collection</button></div>`;
+  }
+  document.getElementById('pg-shop').innerHTML=`<div class="page-head"><div><div class="page-title">Boutique</div><div class="page-sub">Choisis tranquillement. Tes XP ne peuvent jamais devenir négatifs.</div></div><div class="xp-pill">${S.xp} XP</div></div><div class="seg-tabs">${tabs.map(t=>`<button class="seg-btn ${tab===t?'on':''}" onclick="switchShopTab('${t}')">${labels[t]}</button>`).join('')}</div>${content}`;
+}
+function equipOutfitV11(id){if(S.xp<OUTFIT_XP[id-1])return;S.equippedOutfit=id;save();renderShop();renderCompanion();renderHome();toast('Tenue équipée');}
+function buyItemV11(id){const item=SHOP_ITEMS.find(x=>x.id===id);if(!item||S.xp<item.price)return;if(!S.ownedItems.includes(id)){S.ownedItems.push(id);S.xp-=item.price;}save();renderShop();toast(item.name+' est dans ton inventaire');}
+function toggleEquipV11(id){toggleEquip(id);renderShop();renderInventory();}
+function buyOrEquipBgV11(id,price){buyOrEquipBg(id,price);renderShop();renderCompanion();}
+function renderInventory(){
+  const owned=SHOP_ITEMS.filter(i=>S.ownedItems.includes(i.id));
+  document.getElementById('pg-inventory').innerHTML=`<div class="page-head"><div><div class="page-title">Inventaire</div><div class="page-sub">${owned.length} accessoire${owned.length>1?'s':''} possédé${owned.length>1?'s':''}. Maximum 5 équipés.</div></div><div class="xp-pill">${S.equippedItems.length}/5</div></div>
+    ${owned.length?`<div class="inventory-grid">${owned.map(item=>{const eq=S.equippedItems.includes(item.id);return`<article class="product-card ${item.rarity} ${eq?'equipped':''}"><div class="product-visual">${accImg(item.id,88,88)}</div><div class="product-name">${item.name}</div><span class="rarity-tag ${item.rarity}">${RARITY_LABELS[item.rarity]}</span> <span class="status-tag ${eq?'equipped':'owned'}">${eq?'Équipé':'Possédé'}</span><button class="product-action" onclick="toggleEquipV11(${item.id})">${eq?'Retirer':'Équiper'}</button></article>`}).join('')}</div>`:`<div class="card" style="text-align:center;padding:28px"><div class="page-title" style="font-size:17px">Ton inventaire est vide</div><div class="page-sub">Les accessoires achetés apparaîtront ici.</div><button class="btn" onclick="goTab('shop');switchShopTab('accessoires')">Voir les accessoires</button></div>`}`;
+}
+function setCardTheme(theme){S.cardTheme=theme;save();renderCards();}
+function renderCards(){
+  if(S.age==='junior'){document.getElementById('pg-cards').innerHTML='';return;}
+  S.cardCollection=S.cardCollection||[0,2];
+  const theme=S.cardTheme||'Paris';
+  document.getElementById('pg-cards').innerHTML=`<div class="page-head"><div><div class="page-title">Mes cartes</div><div class="page-sub">Une collection sans pression ni classement.</div></div></div>
+    <div class="collection-summary"><div style="font-size:11px;font-weight:800;opacity:.8">COLLECTION ${theme.toUpperCase()}</div><div style="font-size:25px;font-weight:900">${S.cardCollection.length}/10 cartes</div><div style="font-size:11px;opacity:.85;margin-top:4px">Débloque-les grâce aux défis et aux étapes d’autonomie.</div></div>
+    <div class="theme-row">${CARD_THEMES.map(t=>`<button class="theme-chip ${theme===t?'on':''}" onclick="setCardTheme('${t}')">${t}</button>`).join('')}</div>
+    <div class="cards-grid">${CARD_NAMES.map((name,i)=>{const p=CARD_POS[i],unlocked=S.cardCollection.includes(i);return`<article class="collect-card ${unlocked?'':'locked'}"><div class="card-art" style="background-position:${p[0]*25}% ${p[1]*100}%"></div><div class="card-meta">${name}<br><span style="color:#D8B7FF">${i%4===3?'Épique':i%3===0?'Rare':'Commun'}</span></div></article>`}).join('')}</div>
+    <div class="safety-box"><strong>Échanges prévus plus tard :</strong> 5 amis maximum, ajout par code ami ou QR code, réactions prédéfinies seulement. Pas de chat, pas de messages privés, pas de recherche d’inconnus.</div>`;
+}
+function renderCareer(){
+  if(S.age!=='grand'){document.getElementById('pg-career').innerHTML='';return;}
+  const cards=[['Stage','Préparer mon stage','Checklist : tenue, trajet, horaires, personne à contacter.'],['Formation','Trouver une formation','Comparer la durée, le lieu, les aides et les prérequis.'],['Métier','Explorer un métier','Découvrir les tâches, l’environnement et les compétences utiles.'],['CV','Construire mon CV','Présenter mes expériences, qualités et centres d’intérêt simplement.'],['Entretien','Me préparer','Répéter une présentation courte et prévoir deux questions.'],['Budget','Gérer mon argent','Distinguer besoins, envies, dépenses fixes et économies.'],['Transport','Préparer un trajet','Repérer les arrêts, les correspondances et une solution de secours.']];
+  document.getElementById('pg-career').innerHTML=`<div class="page-head"><div><div class="page-title">Stage & formation</div><div class="page-sub">Des étapes concrètes pour préparer la suite à ton rythme.</div></div></div><div class="career-grid">${cards.map(c=>`<article class="career-card"><div class="career-kicker">${c[0]}</div><div class="career-title">${c[1]}</div><div class="career-text">${c[2]}</div></article>`).join('')}</div><div class="safety-box">Cet espace aide à préparer les démarches. Il ne partage aucune donnée personnelle et ne contacte aucun organisme.</div>`;
+}
+function challengeCategories(){return S.age==='junior'?['Autonomie maison','Hygiène','Émotions','Loisirs sans écran','Vocabulaire']:S.age==='ado'?['Quotidien','École','Organisation','Relations sociales','Sorties simples','Ennui']:['Autonomie extérieure','Transports','Courses','Stage','Formation','CV','Entretien','Budget'];}
+
+// ==========================================================
+// DISCOVER PAGE
+// ==========================================================
+function renderDisc(){
+  const yt=YT[S.age]||YT.junior;
+  const recs=RECS[S.age]||[];
+
+  const actCards=[
+    {ico:'🎨',t:'Coloriage & dessin',s:'5 coloriages à imprimer',tg:'Créatif',tc:'#F5EEF8',tf:'#6C3483',fn:()=>openSub('sp-coloring')},
+    {ico:'🏃',t:'Jouer dehors',s:'Jeux solo et en groupe',tg:'Sport',tc:'#EBF4FF',tf:'#185FA5',fn:()=>openOutdoor()},
+    {ico:'🧩',t:'Faire un puzzle',s:'Astuces pour bien s\'y prendre',tg:'Réflexion',tc:'#FEF5E7',tf:'#784212',fn:()=>openSub('sp-puzzle')},
+    {ico:'📚',t:'Lire 15 minutes',s:'Note les livres que tu as lus',tg:'Lecture',tc:'#E8F8F0',tf:'#0F6E56',fn:()=>openBooks()},
+    {ico:'🏗️',t:'Construction & créativité',s:'Idées avec Lego, carton, etc.',tg:'Créatif',tc:'#F5EEF8',tf:'#6C3483',fn:()=>openBuild()},
+    {ico:'✨',t:'Autres idées sans écran',s:'Plein d\'activités sympas !',tg:'Bien-être',tc:'#EEF2FF',tf:'#3730a3',fn:()=>openOffscreen()},
+  ].map((c,i)=>`<div class="disc-card" onclick="discActs[${i}].fn()">
+    <div class="disc-ico">${c.ico}</div>
+    <div class="disc-b"><div class="disc-t">${c.t}</div><div class="disc-s">${c.s}</div><span class="disc-tag" style="background:${c.tc};color:${c.tf}">${c.tg}</span></div>
+    <div class="disc-arr">›</div>
+  </div>`).join('');
+
+  let recHTML='';
+  if(recs.length>0){
+    recHTML=`<div class="sec" style="margin-top:18px">🍳 Recettes simples</div>`+recs.map(r=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="font-size:32px">${r.i}</div><div><div style="font-size:14px;font-weight:900">${r.n}</div><div style="font-size:11px;color:var(--t2)">⏱ ${r.t}</div></div></div><ol style="list-style:none;counter-reset:step">${r.st.map(s=>`<li style="padding:4px 0 4px 20px;position:relative;font-size:12px;font-weight:600;border-bottom:.5px solid #f0f2f5;line-height:1.4" ><span style="position:absolute;left:0;top:5px;width:14px;height:14px;background:var(--p);color:white;border-radius:50%;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;counter-increment:step;content:counter(step)">${r.st.indexOf(s)+1}</span>${s}</li>`).join('')}</ol></div>`).join('');
+  }
+
+  document.getElementById('pg-disc').innerHTML=`
+    <div class="sec">🌈 Activités sans écran</div>
+    ${actCards}
+    <div class="sec" style="margin-top:18px">📺 Chaînes YouTube recommandées</div>
+    <div style="font-size:11px;color:var(--t2);margin-bottom:8px;font-weight:600">Appuie pour ouvrir YouTube</div>
+    ${yt.map(v=>`<div class="vc" onclick="window.open('${v.u}','_blank')"><div class="vt">${v.i}</div><div class="vb"><div class="vtit">${v.t}</div><div class="vch">${v.ch}</div><span class="vtg" style="background:${v.tc};color:${v.tf}">${v.tg}</span></div></div>`).join('')}
+    ${recHTML}`;
+}
+
+// Store disc actions for onclick
+const discActs=[
+  {fn:()=>openSub('sp-coloring')},
+  {fn:()=>openOutdoor()},
+  {fn:()=>openSub('sp-puzzle')},
+  {fn:()=>openBooks()},
+  {fn:()=>openBuild()},
+  {fn:()=>openOffscreen()},
+];
+
+function openOutdoor(){
+  const SOLO=[
+    {n:'La marelle',d:'Trace des cases au sol avec de la craie (ou des pierres). Saute d\'une case à l\'autre sur un seul pied !'},
+    {n:'Le parcours du combattant',d:'Crée un parcours dehors : courir jusqu\'à un arbre, faire le tour d\'un banc, sauter dans des cercles tracés au sol.'},
+    {n:'Cherche et trouve',d:'Choisis 10 choses à trouver dehors (une plume, une pierre ronde, quelque chose de rouge…) et pars les chercher !'},
+  ];
+  const GROUPE=[
+    {n:'Le 1, 2, 3 soleil',d:'Un joueur face au mur dit "1, 2, 3 soleil !" et se retourne. Les autres doivent être figés. Celui qui bouge retourne au départ.'},
+    {n:'Le jeu de la balle empoisonnée',d:'On délimite une zone. Un joueur a la balle et touche les autres avec. Celui qui est touché devient "attrapeur" aussi !'},
+    {n:'Cache-cache',d:'Un joueur compte jusqu\'à 20 les yeux fermés pendant que les autres se cachent. Il doit trouver tout le monde !'},
+  ];
+  document.getElementById('outdoor-content').innerHTML=`
+    <div class="sec" style="margin-top:0">🧍 Jeux solo</div>
+    ${SOLO.map(g=>`<div class="game-card"><span class="game-type" style="background:#EBF4FF;color:#185FA5">Solo</span><div class="game-name">${g.n}</div><div class="game-desc">${g.d}</div></div>`).join('')}
+    <div class="sec">👫 Jeux en groupe</div>
+    ${GROUPE.map(g=>`<div class="game-card"><span class="game-type" style="background:#E8F8F0;color:#0F6E56">Groupe</span><div class="game-name">${g.n}</div><div class="game-desc">${g.d}</div></div>`).join('')}`;
+  openSub('sp-outdoor');
+}
+
+function openBooks(){
+  renderBooks();openSub('sp-books');
+}
+function renderBooks(){
+  const list=document.getElementById('book-list');if(!list)return;
+  list.innerHTML=(S.books||[]).map((b,i)=>`<li class="book-item"><div class="book-ico">📗</div><div class="book-title">${b}</div><button class="book-del" onclick="deleteBook(${i})">🗑️</button></li>`).join('')||'<li style="padding:10px;color:var(--t2);font-size:13px;font-weight:600">Aucun livre pour l\'instant. Ajoute ton premier !</li>';
+}
+function addBook(){
+  const inp=document.getElementById('book-inp');const val=inp.value.trim();
+  if(!val)return;S.books=S.books||[];S.books.unshift(val);inp.value='';save();renderBooks();toast('Livre ajouté ! 📚');
+}
+function deleteBook(i){S.books.splice(i,1);save();renderBooks();}
+document.getElementById('book-inp')?.addEventListener('keydown',e=>{if(e.key==='Enter')addBook();});
+
+function openBuild(){
+  const IDEAS=[
+    {i:'🧱',n:'Tour de Lego',d:'Construis la tour la plus haute possible sans qu\'elle tombe ! Tu peux la décorer avec des couleurs spécifiques.',mat:'Lego ou Duplo'},
+    {i:'📦',n:'Château en carton',d:'Prends un grand carton, découpe des fenêtres et une porte, décore-le avec des feutres ou de la peinture.',mat:'Cartons, ciseaux, colle, crayons'},
+    {i:'🪵',n:'Pont Kapla',d:'Essaie de construire un pont entre deux chaises avec des planchettes Kapla sans colle ! Vois combien il peut en tenir.',mat:'Planchettes Kapla'},
+    {i:'🌾',n:'Maison en pâte à modeler',d:'Construis une mini-maison avec des saucisses de pâte à modeler pour les murs et des plaques pour le toit.',mat:'Pâte à modeler'},
+    {i:'🎋',n:'Structure en spaghettis',d:'Avec des spaghettis crus et des marshmallows, construis la structure la plus solide ou la plus haute possible !',mat:'Spaghettis crus, marshmallows'},
+    {i:'✂️',n:'Origami',d:'Plie du papier pour créer un bateau, une grenouille ou un avion. Des tutos sur YouTube avec "origami facile enfant".',mat:'Feuilles de papier'},
+  ];
+  document.getElementById('build-content').innerHTML=`
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px;font-weight:600;line-height:1.5">Des idées de constructions à faire à la maison, seul ou avec quelqu\'un ! 🏗️</div>
+    ${IDEAS.map(idea=>`<div class="build-card"><div class="build-ico">${idea.i}</div><div class="build-name">${idea.n}</div><div class="build-desc">${idea.d}</div><div class="build-mat">🛒 Il te faut : ${idea.mat}</div></div>`).join('')}`;
+  openSub('sp-build');
+}
+
+function openOffscreen(){
+  const IDEAS=[
+    {i:'🎭',n:'Inventer une histoire',d:'Crée un personnage et raconte son aventure à voix haute ou écris-la sur un papier !'},
+    {i:'🧘',n:'5 min de respiration',d:'Assieds-toi confortablement, ferme les yeux et respire doucement 5 minutes. Pense à quelque chose qui te rend heureux.'},
+    {i:'✉️',n:'Écrire une lettre',d:'Écris une lettre à un ami, un membre de ta famille ou même à ton futur toi dans 1 an !'},
+    {i:'🎵',n:'Inventer une chanson',d:'Crée ta propre chanson sur une mélodie que tu connais. Parle de ta journée ou de ce que tu aimes !'},
+    {i:'🔭',n:'Observer la nature',d:'Assieds-toi dehors 10 minutes et observe : combien d\'oiseaux tu vois ? Quels sons tu entends ?'},
+    {i:'🧪',n:'Expérience simple',d:'Mélange du bicarbonate et du vinaigre : ça mousse ! Ou fais des bulles de savon géantes avec un cintre recouvert de fil.'},
+    {i:'🗓️',n:'Décorer son agenda',d:'Prends un carnet et décore les pages avec des dessins, stickers ou gommettes. Écris tes activités préférées dedans.'},
+    {i:'🎲',n:'Inventer un jeu',d:'Crée les règles d\'un nouveau jeu de société avec des dés et des petits papiers. Fais-le tester à quelqu\'un !'},
+    {i:'🪴',n:'Semer des graines',d:'Mets de la terre dans un pot, plante des graines de basilic ou de radis, arrose un peu chaque jour et observe la pousse !'},
+    {i:'🎤',n:'Karaoké à la maison',d:'Cherche les paroles de ta chanson préférée et chante-la à voix haute, seul(e) ou avec des amis !'},
+  ];
+  document.getElementById('offscreen-content').innerHTML=`
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px;font-weight:600;line-height:1.5">Des tas d\'idées pour s\'amuser sans écran ! ✨</div>
+    ${IDEAS.map(i=>`<div class="disc-card" style="cursor:default"><div class="disc-ico">${i.i}</div><div class="disc-b"><div class="disc-t">${i.n}</div><div class="disc-s">${i.d}</div></div></div>`).join('')}`;
+  openSub('sp-offscreen');
+}
+
+// ==========================================================
+// VOCAB
+// ==========================================================
+let vocCat='maison';
+function renderVoc(){
+  if(S.age!=='junior'){document.getElementById('pg-voc').innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--t2)"><div style="font-size:48px;margin-bottom:12px">📖</div><div style="font-size:15px;font-weight:800">Section pour les 7–11 ans</div></div>`;return;}
+  const words=VOC_WORDS[vocCat]||[];
+  const totalAll=Object.values(VOC_WORDS).flat().length;
+  const heardCount=Object.keys(S.vocHeard||{}).length;
+  const pct=Math.round(heardCount/totalAll*100);
+  document.getElementById('pg-voc').innerHTML=`
+    <div class="sec" style="margin-top:0">📖 Mon imagier</div>
+    <div class="voc-prog"><div style="font-size:20px">⭐</div><div class="voc-pb"><div class="voc-pf" style="width:${pct}%"></div></div><div class="voc-pt">${heardCount}/${totalAll}</div></div>
+    <div class="voc-cats">${VOC_CATS.map(c=>`<button class="voc-cat-btn${c.id===vocCat?' on':''}" onclick="switchVocCat('${c.id}')">${c.icon} ${c.label}</button>`).join('')}</div>
+    <div class="voc-grid">${words.map((w,i)=>{const key=vocCat+'-'+i;const h=!!(S.vocHeard||{})[key];return`<div class="voc-card${h?' heard':''}" onclick="tapVoc('${key}','${w.w}','${w.s}')"><button class="voc-spk${h?' sp':''}" onclick="event.stopPropagation();speakVoc('${key}','${w.w}','${w.s}',this)">🔊</button><span class="voc-big">${w.e}</span><div class="voc-word">${w.w}</div><div class="voc-sub">${w.s}</div></div>`;}).join('')}</div>`;
+}
+function switchVocCat(id){vocCat=id;renderVoc();document.getElementById('scr').scrollTop=0;}
+function tapVoc(key,word,sub){if(!S.vocHeard)S.vocHeard={};if(!S.vocHeard[key]){S.vocHeard[key]=true;save();document.querySelector(`[onclick*="${key}"]`)?.classList.add('heard');}speak(word+'. '+sub,null);}
+function speakVoc(key,word,sub,btn){if(!S.vocHeard)S.vocHeard={};if(!S.vocHeard[key]){S.vocHeard[key]=true;save();btn.closest('.voc-card')?.classList.add('heard');btn.classList.add('sp');}speak(word+'. '+sub,btn);}
+
+// ==========================================================
+// TIPS
+// ==========================================================
+function renderTips(){
+  const tips=getTips();const tip=tips[S.tipIdx%tips.length];
+  document.getElementById('pg-tips').innerHTML=`
+    <div class="sec">Conseil du moment</div>
+    <div class="tip-c ${tip.c}"><div class="tip-ico">${tip.i}</div><span class="tip-tg ${tip.c}">${tip.tg}</span><p class="tip-txt" style="margin-top:8px">${tip.tx}</p>
+    <div class="tipnav"><button class="tnb" onclick="tipNav(-1)">← Précédent</button><span style="font-size:11px;color:var(--t2);font-weight:700">${(S.tipIdx%tips.length)+1}/${tips.length}</span><button class="tnb" onclick="tipNav(1)">Suivant →</button></div></div>`;
+}
+function tipNav(d){const tips=getTips();S.tipIdx=((S.tipIdx||0)+d+tips.length)%tips.length;save();renderTips();}
+
+// V11: catégories adaptées à l'âge et rythme non chronométré.
+function renderTasks(){
+  const daily=getDailyTasks(),cats=challengeCategories();
+  document.getElementById('pg-tasks').innerHTML=`<div class="page-head"><div><div class="page-title">Mes défis</div><div class="page-sub">Quatre petites étapes par jour. Tu peux avancer sans chronomètre.</div></div><div class="xp-pill">${S.xp} XP</div></div><div class="challenge-cats">${cats.map(c=>`<span class="challenge-chip">${c}</span>`).join('')}</div>${daily.map(taskHTML).join('')}<div class="safety-box">Les défis sont des propositions. Tu peux demander de l'aide, faire une pause ou revenir plus tard.</div>`;
+}
+
+// V12: la boutique contient uniquement les dix tenues du compagnon.
+function renderShop(){
+  const a=getA();if(!a)return;
+  const outfits=OUTFITS[a.id]||[];
+  previewOutfit=Math.max(1,Math.min(10,previewOutfit||normalizedOutfit()));
+  const selected=outfits[previewOutfit-1];
+  const unlocked=S.xp>=OUTFIT_XP[previewOutfit-1];
+  document.getElementById('pg-shop').innerHTML=`
+    <div class="page-head">
+      <div><div class="page-title">Tenues de ${a.name}</div><div class="page-sub">Choisis une tenue, regarde-la en grand, puis équipe-la.</div></div>
+      <div class="xp-pill">${S.xp} XP</div>
+    </div>
+    <div class="outfit-layout">
+      <section class="outfit-preview">
+        <div style="height:245px;display:flex;align-items:center;justify-content:center">${animImg(a.id,previewOutfit-1,230,230)}</div>
+        <div style="font-size:18px;font-weight:900">${selected?.name||''}</div>
+        <div class="page-sub">${unlocked?'Tenue disponible':'Débloquée à '+OUTFIT_XP[previewOutfit-1]+' XP'}</div>
+        <button class="product-action" ${unlocked?'':'disabled'} onclick="equipOutfitV11(${previewOutfit})">${normalizedOutfit()===previewOutfit?'Tenue portée':'Porter cette tenue'}</button>
+      </section>
+      <div class="outfit-list">
+        ${outfits.map((o,i)=>{
+          const available=S.xp>=OUTFIT_XP[i],active=previewOutfit===i+1;
+          return`<button class="outfit-choice ${active?'on':''} ${available?'':'locked'}" onclick="previewOutfit=${i+1};renderShop()">
+            <div style="height:115px;display:flex;align-items:center;justify-content:center">${animImg(a.id,i,108,108)}</div>
+            <div class="product-name" style="min-height:0">${o.name}</div>
+            <div class="page-sub">${available?(normalizedOutfit()===i+1?'Portée':'Disponible'):OUTFIT_XP[i]+' XP'}</div>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+// ==========================================================
+// V13 — PARCOURS ACCESSIBLE 7-11, JETONS ET DÉFIS HEBDOMADAIRES
+// ==========================================================
+const DAILY_JUNIOR=[
+  {n:'Me brosser les dents',p:'🪥',xp:2,c:'hy',cl:'Hygiène'},
+  {n:"M'habiller",p:'👕',xp:2,c:'sm',cl:'Matin'},
+  {n:"Boire de l'eau",p:'💧',xp:2,c:'re',cl:'Santé'},
+  {n:'Ranger une chose',p:'🧺',xp:2,c:'or',cl:'Maison'},
+  {n:'Préparer mon sac',p:'🎒',xp:2,c:'bi',cl:'École'},
+  {n:'Dire bonjour',p:'👋',xp:2,c:'sm',cl:'Relations'},
+  {n:'Me laver les mains',p:'🧼',xp:2,c:'hy',cl:'Hygiène'},
+  {n:'Mettre mes chaussures',p:'👟',xp:2,c:'sm',cl:'Départ'},
+  {n:'Faire mon lit',p:'🛏️',xp:2,c:'or',cl:'Maison'},
+  {n:'Aider à mettre la table',p:'🍽️',xp:2,c:'re',cl:'Maison'}
+];
+const WEEKLY_CHALLENGES=[
+  {id:'help',i:'🙋',n:"Demander de l'aide à un adulte",d:'Expliquer calmement ce dont tu as besoin.',t:5},
+  {id:'buy',i:'🛍️',n:'Acheter un petit objet',d:'Avec un adulte si nécessaire.',t:6},
+  {id:'snack',i:'🥪',n:'Préparer mon goûter',d:'Choisir et préparer quelque chose de simple.',t:5},
+  {id:'trip',i:'🚶',n:'Faire un petit trajet accompagné',d:'Observer le chemin et les repères.',t:7},
+  {id:'bag',i:'🎒',n:'Ranger mon sac seul',d:'Vérifier puis remettre chaque chose à sa place.',t:5},
+  {id:'hello',i:'👋',n:"Dire bonjour à quelqu'un",d:'Avec un mot, un geste ou un sourire.',t:4},
+  {id:'clothes',i:'👕',n:'Choisir mes vêtements',d:'Regarder la météo et choisir une tenue.',t:5},
+  {id:'tomorrow',i:'🗓️',n:'Préparer mes affaires pour demain',d:'Utiliser une petite liste si besoin.',t:6},
+  {id:'call',i:'📞',n:'Appeler un proche avec aide',d:'Préparer ce que tu veux dire.',t:7},
+  {id:'offline',i:'🎨',n:'Faire une activité sans écran',d:'Pendant au moins quinze minutes.',t:5}
+];
+const VISUAL_ACTS=[
+  {ico:'🏫',t:'École'},{ico:'🏠',t:'Maison'},{ico:'🍽️',t:'Repas'},{ico:'🚿',t:'Douche'},
+  {ico:'⚽',t:'Sport'},{ico:'🎨',t:'Loisirs'},{ico:'🚶',t:'Sortie'},{ico:'🩺',t:'Rendez-vous'},
+  {ico:'🛋️',t:'Repos'},{ico:'👨‍👩‍👧',t:'Famille'},{ico:'✏️',t:'Devoirs'},{ico:'🌙',t:'Coucher'}
+];
+const DISCOVER_PLACES=[
+  {i:'🌳',n:'Parc de Rentilly',c:'Parc',d:'Un grand parc pour marcher et faire une pause au calme.'},
+  {i:'🏰',n:'Château de Vaux-le-Vicomte',c:'Château',d:'Un château, des jardins et de grands espaces.'},
+  {i:'🐯',n:'Parc des Félins',c:'Animaux',d:'Observer des félins dans un grand parc naturel.'},
+  {i:'🏛️',n:'Musée de la Grande Guerre',c:'Musée',d:'Un musée à Meaux avec un parcours visuel.'},
+  {i:'📚',n:'Médiathèque locale',c:'Médiathèque',d:'Lire, écouter une histoire ou choisir un livre.'},
+  {i:'🏊',n:'Piscine',c:'Loisirs',d:'Nager ou jouer dans un créneau adapté.'},
+  {i:'🎳',n:'Bowling',c:'Loisirs',d:'Une activité simple à faire en famille.'},
+  {i:'🎬',n:'Cinéma',c:'Cinéma',d:'Choisir une séance calme et préparer le son.'},
+  {i:'🚶',n:'Balade en forêt de Fontainebleau',c:'Balade',d:'Une promenade avec un trajet court préparé à l’avance.'}
+];
+const EXTRA_TIPS=[
+  {i:'🙋',tg:'Aide',c:'social',tx:"Demander de l’aide n’est pas un échec. C’est une façon d’apprendre."},
+  {i:'💧',tg:'Santé',c:'bien',tx:'Ton corps et ton cerveau fonctionnent mieux quand tu bois régulièrement.'},
+  {i:'🚶',tg:'Bien-être',c:'bien',tx:'Même une petite promenade peut aider à se sentir mieux.'},
+  {i:'🌟',tg:'Progrès',c:'orga',tx:'Chaque petit progrès compte. Tu peux être fier de toi.'}
+];
+const BG_NAMES=[
+  {key:'soft',name:'Chambre douce',gradient:'linear-gradient(145deg,#DDEBFA,#FFF5EA)',price:0},
+  {key:'forest',name:'Forêt magique',gradient:'linear-gradient(145deg,#7CCB8A,#DDF4B4)',price:25},
+  {key:'beach',name:'Plage',gradient:'linear-gradient(145deg,#70C9F2,#FFE29A)',price:35},
+  {key:'mountain',name:'Montagne',gradient:'linear-gradient(145deg,#91A8C7,#E7EEF6)',price:45},
+  {key:'stars',name:'Monde étoilé',gradient:'linear-gradient(145deg,#392B70,#8D6BD1)',price:60}
+];
+let shopView='menu',discoverView='menu';
+
+function pickReader(mode,el){
+  S.readerMode=mode;
+  document.querySelectorAll('.reader-opt').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');checkReady();
+  if(mode==='nonReader')speak("J'ai besoin d'aide pour lire",null);
+}
+function checkReady(){
+  const n=document.getElementById('inp-n').value.trim();
+  document.getElementById('btn-st').disabled=!(n&&_pAge&&S.readerMode);
+}
+function startApp(){
+  const n=document.getElementById('inp-n').value.trim();
+  if(!n||!_pAge||!S.readerMode)return;
+  S.name=n;S.age=_pAge;S.lastTaskDay='';S._dailyTasksCache=[];save();showScr('sc-anim');renderAnimChoice();
+}
+function maybeSpeak(text){if(S.readerMode==='nonReader')speak(text,null);}
+function coinIcon(extraClass){return`<img class="coin-icon ${extraClass||''}" src="assets/jeton-etoile.png" alt="jeton">`;}
+function tokenLabel(value){return`<span class="token-line">${coinIcon('token-coin')}${value} jetons</span>`;}
+function mondayKey(){
+  const d=new Date(),day=(d.getDay()+6)%7;
+  d.setHours(0,0,0,0);d.setDate(d.getDate()-day);
+  return d.toISOString().slice(0,10);
+}
+function ensureWeekly(){
+  const key=mondayKey();
+  if(S.weeklyKey!==key){S.weeklyKey=key;S.weeklySelected=[];S.weeklyDone={};S.weeklyLocked=false;save();}
+}
+function genDailyTasks(){
+  const day=Math.floor(Date.now()/86400000);
+  const pool=S.age==='junior'?DAILY_JUNIOR:(TASK_POOLS[S.age]||TASK_POOLS.ado).hygiene.concat((TASK_POOLS[S.age]||TASK_POOLS.ado).repas,(TASK_POOLS[S.age]||TASK_POOLS.ado).rangement,(TASK_POOLS[S.age]||TASK_POOLS.ado).horscran);
+  return Array.from({length:5},(_,i)=>({id:i+1,...pool[(day+i*3)%pool.length],c:pool[(day+i*3)%pool.length].c||['hy','re','or','bi','sm'][i],cl:pool[(day+i*3)%pool.length].cl||'Quotidien'}));
+}
+function getDailyTasks(){
+  const today=todayKey();
+  if(S.lastTaskDay!==today||!Array.isArray(S._dailyTasksCache)||S._dailyTasksCache.length!==5){
+    S._dailyTasksCache=genDailyTasks();S.dailyTaskIds=[1,2,3,4,5];S.lastTaskDay=today;S.tasks={};save();
+  }
+  return S._dailyTasksCache;
+}
+function taskHTML(t){
+  const done=!!S.tasks[t.id],bg={hy:'#E1F5EE',or:'#FAEEDA',bi:'#EEF2FF',re:'#EAF3DE',sm:'#EBF4FF'}[t.c]||'#f0f0f0';
+  return`<div class="tc${done?' done':''}" data-tid="${t.id}" onclick="maybeSpeak('${t.n.replace(/'/g,"\\'")}');toggleTask(${t.id})"><div class="tp-box" style="background:${bg}">${t.p}</div><div class="tb2"><div class="tn">${t.n}</div><div class="tcat">${t.cl}</div></div><div class="tpts">${coinIcon()} +${t.xp}</div><div class="tcb${done?' on':''}"><div class="tck"></div></div></div>`;
+}
+function renderHome(){
+  const a=getA();if(!a)return;const tasks=getDailyTasks(),done=Object.keys(S.tasks).length,today=todayKey(),bg=getAnimalBg(),equipped=normalizedOutfit();
+  const WEATHERS=[{i:'☀️',l:'Soleil'},{i:'🌤️',l:'Nuageux'},{i:'🌧️',l:'Pluie'},{i:'⛈️',l:'Orage'},{i:'❄️',l:'Neige'}];
+  const MOODS=[{i:'😄',l:'Très content'},{i:'😊',l:'Content'},{i:'😐',l:'Neutre'},{i:'😴',l:'Fatigué'},{i:'😢',l:'Triste'},{i:'😠',l:'En colère'}];
+  document.getElementById('pg-home').innerHTML=`
+    <div class="gh" style="background:${bg.gradient}"><div class="gh-anim equipped-home-animal">${animImg(a.id,equipped-1,78,78)}</div><div class="gh-r"><div class="gh-hi">Bonjour ${S.name} !</div><div class="gh-st">${a.name} est avec toi</div><div style="margin-top:9px;color:white">${tokenLabel(S.xp)}</div></div></div>
+    <div class="sr"><div class="sb"><div class="si">${coinIcon()}</div><div><div class="sv">${S.xp}</div><div class="sl">jetons disponibles</div></div></div><div class="sb"><div class="si">✅</div><div><div class="sv">${done}/5</div><div class="sl">tâches du jour</div></div></div></div>
+    ${S.age==='junior'?`<div class="weather-card"><div class="wth-title">La météo dehors</div><div class="wth-row">${WEATHERS.map((w,i)=>`<div class="wth-btn${S.weatherDay===today&&S.weather===i?' sel':''}" onclick="maybeSpeak('${w.l}');setWeather(${i})"><div class="wth-ico">${w.i}</div><div class="wth-lbl">${w.l}</div></div>`).join('')}</div></div>
+    <div class="mood-card"><div class="mood-title">Comment tu te sens ?</div><div class="mood-row">${MOODS.map((m,i)=>`<div class="mood-btn${S.moodDay===today&&S.mood===i?' sel':''}" onclick="maybeSpeak('${m.l}');setMood(${i})"><div class="mood-ico">${m.i}</div><div class="mood-lbl">${m.l}</div></div>`).join('')}</div></div>`:''}
+    <div class="sec">Mes 5 tâches du jour</div>${tasks.map(taskHTML).join('')}
+    <div class="sec">Mes 10 conseils</div><div class="home-tips">${getTips().map((tip,i)=>{const text=(tip.tg+'. '+tip.tx).replace(/'/g,"\\'");return`<div class="home-tip" onclick="maybeSpeak('${text}')"><div class="home-tip-icon">${tip.i}</div><div class="home-tip-body"><div class="home-tip-title">${i+1}. ${tip.tg}</div><div class="home-tip-text">${tip.tx}</div></div><button class="speak-mini" onclick="event.stopPropagation();speak('${text}',this)">🔊</button></div>`}).join('')}</div>`;
+}
+function toggleWeeklyChoice(id){
+  ensureWeekly();if(S.weeklySelected.includes(id))S.weeklySelected=S.weeklySelected.filter(x=>x!==id);
+  else if(S.weeklySelected.length<5)S.weeklySelected.push(id);else toast('Tu as déjà choisi 5 défis');
+  save();renderTasks();
+}
+function validateWeeklySelection(){if(S.weeklySelected.length!==5){toast('Choisis exactement 5 défis');return;}S.weeklyLocked=true;save();renderTasks();maybeSpeak('Tes cinq défis de la semaine sont prêts');}
+function toggleWeeklyDone(id){
+  const c=WEEKLY_CHALLENGES.find(x=>x.id===id);if(!c)return;
+  const was=!!S.weeklyDone[id];S.weeklyDone[id]=!was;S.xp=Math.max(0,S.xp+(was?-c.t:c.t));save();renderTasks();toast(was?'Défi remis à faire':'Défi réussi, plus '+c.t+' jetons');
+}
+function renderTasks(){
+  ensureWeekly();const locked=S.weeklyLocked&&S.weeklySelected.length===5;
+  const chosen=WEEKLY_CHALLENGES.filter(c=>S.weeklySelected.includes(c.id));
+  document.getElementById('pg-tasks').innerHTML=`<div class="page-head"><div><div class="page-title">Défis de la semaine</div><div class="page-sub">${locked?'Tu peux les faire dans l’ordre que tu veux.':'Choisis cinq défis pour cette semaine.'}</div></div><div class="xp-pill">${coinIcon()} ${S.xp}</div></div>
+    ${locked?chosen.map(c=>`<div class="tc${S.weeklyDone[c.id]?' done':''}" onclick="maybeSpeak('${c.n.replace(/'/g,"\\'")}');toggleWeeklyDone('${c.id}')"><div class="tp-box bg-sm">${c.i}</div><div class="tb2"><div class="tn">${c.n}</div><div class="tcat">${c.d}</div></div><div class="tpts">${coinIcon()} +${c.t}</div><div class="tcb${S.weeklyDone[c.id]?' on':''}"><div class="tck"></div></div></div>`).join(''):`<div class="card" style="text-align:center"><strong>${S.weeklySelected.length}/5 défis choisis</strong></div>${WEEKLY_CHALLENGES.map(c=>`<div class="weekly-option ${S.weeklySelected.includes(c.id)?'sel':''}" onclick="maybeSpeak('${c.n.replace(/'/g,"\\'")}');toggleWeeklyChoice('${c.id}')"><div class="weekly-icon">${c.i}</div><div class="weekly-main"><div class="weekly-name">${c.n}</div><div class="weekly-desc">${c.d}</div></div><div class="weekly-check">${S.weeklySelected.includes(c.id)?'✓':''}</div></div>`).join('')}<button class="btn" ${S.weeklySelected.length!==5?'disabled':''} onclick="validateWeeklySelection()">Valider mes 5 défis</button>`}`;
+}
+function renderPlan(){
+  if(!S.visualPlan)S.visualPlan=Array.from({length:7},(_,i)=>[VISUAL_ACTS[(i+2)%VISUAL_ACTS.length],VISUAL_ACTS[(i+5)%VISUAL_ACTS.length],VISUAL_ACTS[(i+8)%VISUAL_ACTS.length]]);
+  const days=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  document.getElementById('pg-plan').innerHTML=`<div class="page-head"><div><div class="page-title">Mon planning</div><div class="page-sub">Appuie sur une image pour l’entendre ou la changer.</div></div></div>${days.map((d,di)=>`<div class="card"><div style="font-size:13px;font-weight:900;margin-bottom:9px">${d}</div><div class="visual-grid">${S.visualPlan[di].map((a,ai)=>`<div class="visual-tile" onclick="cycleVisualPlan(${di},${ai});maybeSpeak('${a.t}')"><div class="visual-icon">${a.ico}</div><div class="visual-word">${a.t}</div></div>`).join('')}</div></div>`).join('')}`;
+}
+function cycleVisualPlan(day,index){const cur=S.visualPlan[day][index],next=(VISUAL_ACTS.findIndex(x=>x.t===cur.t)+1)%VISUAL_ACTS.length;S.visualPlan[day][index]=VISUAL_ACTS[next];save();renderPlan();}
+function animalBackgrounds(animalId){return BG_NAMES.map(b=>({...b,id:animalId+'-'+b.key}));}
+function getAnimalBg(){const id=S.equippedAnimalBg?.[S.animalId]||S.animalId+'-soft';return animalBackgrounds(S.animalId).find(b=>b.id===id)||animalBackgrounds(S.animalId)[0];}
+function renderCompanion(){
+  const a=getA();if(!a)return;const bg=getAnimalBg(),outfit=(OUTFITS[a.id]||[])[normalizedOutfit()-1]||(OUTFITS[a.id]||[])[0];
+  document.getElementById('pg-ami').innerHTML=`<div class="page-head"><div><div class="page-title">Mon ami</div><div class="page-sub">Voici ${a.name} aujourd’hui.</div></div><div class="xp-pill">${coinIcon()} ${S.xp}</div></div>
+    <div class="ah" style="background:${bg.gradient}"><div class="friend-portrait"><div class="equipped-friend-animal">${animImg(a.id,normalizedOutfit()-1,210,210)}</div></div><div class="ah-nm" style="color:white">${a.name}</div><div class="friend-outfit"><span class="friend-outfit-label">Tenue :</span> ${outfit?.name||'Naturelle'}</div><div class="ah-st" style="color:white">${bg.name}</div></div>
+    <button class="btn" onclick="shopView='outfits';goTab('shop')">Changer la tenue</button><button class="btn sec" onclick="shopView='backgrounds';goTab('shop')">Changer le fond</button>
+    <button class="btn sec" ${S.hasChangedAnimal?'disabled':''} onclick="changeAnimOnce()">${S.hasChangedAnimal?'Changement déjà utilisé':"Changer d'ami"}</button>`;
+}
+function changeAnimOnce(){if(S.hasChangedAnimal)return;if(!confirm("Tu peux changer d'ami une seule fois. Continuer ?"))return;S.hasChangedAnimal=true;S.animalId=null;save();showScr('sc-anim');renderAnimChoice();}
+function showShop(view){shopView=view;renderShop();}
+function buyOrEquipOutfitV13(id){
+  const key=S.animalId,price=OUTFIT_XP[id-1],owned=S.ownedOutfits[key]||[1];
+  if(!owned.includes(id)){if(S.xp<price){toast('Pas assez de jetons');return;}S.xp-=price;owned.push(id);S.ownedOutfits[key]=owned;}
+  S.equippedOutfit=id;save();renderShop();renderCompanion();renderHome();
+}
+function buyOrEquipAnimalBg(id,price){
+  const key=S.animalId,owned=S.ownedAnimalBgs[key]||[key+'-soft'];
+  if(!owned.includes(id)){if(S.xp<price){toast('Pas assez de jetons');return;}S.xp-=price;owned.push(id);S.ownedAnimalBgs[key]=owned;}
+  S.equippedAnimalBg[key]=id;save();renderShop();renderCompanion();renderHome();
+}
+function renderShop(){
+  const a=getA();if(!a)return;
+  if(shopView==='menu'){document.getElementById('pg-shop').innerHTML=`<div class="page-head"><div><div class="page-title">Boutique</div><div class="page-sub">Choisis ce que tu veux regarder.</div></div><div class="xp-pill">${coinIcon()} ${S.xp}</div></div><div class="big-menu">
+    <button class="big-menu-card" onclick="showShop('outfits')"><span class="big-menu-icon">👗</span><span class="big-menu-title">Boutique des tenues</span><div class="big-menu-sub">Des tenues pour ${a.name}</div></button>
+    <button class="big-menu-card" onclick="showShop('cards')"><span class="big-menu-icon">🃏</span><span class="big-menu-title">Boutique des cartes</span><div class="big-menu-sub">Voir la collection</div></button>
+    <button class="big-menu-card" onclick="showShop('backgrounds')"><span class="big-menu-icon">🖼️</span><span class="big-menu-title">Boutique des fonds</span><div class="big-menu-sub">Changer le décor de ${a.name}</div></button></div>`;return;}
+  if(shopView==='cards'){
+    const unlocked=S.cardCollection||[0,2];
+    document.getElementById('pg-shop').innerHTML=`<button class="shop-back" onclick="showShop('menu')">← Retour à la boutique</button><div class="page-head"><div><div class="page-title">Boutique des cartes</div><div class="page-sub">Cartes disponibles et cartes encore verrouillées.</div></div></div><div class="cards-grid">${CARD_NAMES.map((name,i)=>{const p=CARD_POS[i],ok=unlocked.includes(i);return`<article class="collect-card ${ok?'':'locked'}" onclick="maybeSpeak('${name.replace(/'/g,"\\'")} ${ok?'disponible':'verrouillée'}')"><div class="card-art" style="background-position:${p[0]*25}% ${p[1]*100}%"></div><div class="card-meta">${name}<br><span style="color:#D8B7FF">${ok?'Disponible':'Verrouillée'}</span></div></article>`}).join('')}</div>`;return;
+  }
+  if(shopView==='backgrounds'){const owned=S.ownedAnimalBgs[a.id]||[a.id+'-soft'];const active=getAnimalBg().id;document.getElementById('pg-shop').innerHTML=`<button class="shop-back" onclick="showShop('menu')">← Retour à la boutique</button><div class="page-head"><div><div class="page-title">Fonds de ${a.name}</div><div class="page-sub">Cinq décors pour ton ami.</div></div><div class="xp-pill">${coinIcon()} ${S.xp}</div></div><div class="store-grid">${animalBackgrounds(a.id).map(b=>`<article class="product-card ${active===b.id?'equipped':''}"><div class="product-visual" style="background:${b.gradient}">${portraitImg(a.id,82,82)}</div><div class="product-name">${b.name}</div><button class="product-action" onclick="buyOrEquipAnimalBg('${b.id}',${b.price})">${active===b.id?'Fond utilisé':owned.includes(b.id)?'Utiliser':b.price===0?'Gratuit':coinIcon()+' '+b.price}</button></article>`).join('')}</div>`;return;}
+  const outfits=OUTFITS[a.id]||[],owned=S.ownedOutfits[a.id]||[1];previewOutfit=Math.max(1,Math.min(10,previewOutfit||normalizedOutfit()));
+  document.getElementById('pg-shop').innerHTML=`<button class="shop-back" onclick="showShop('menu')">← Retour à la boutique</button><div class="page-head"><div><div class="page-title">Tenues de ${a.name}</div><div class="page-sub">Achète ou équipe une tenue.</div></div><div class="xp-pill">${coinIcon()} ${S.xp}</div></div><div class="outfit-layout"><section class="outfit-preview"><div style="height:245px;display:flex;align-items:center;justify-content:center">${animImg(a.id,previewOutfit-1,230,230)}</div><div style="font-size:18px;font-weight:900">${outfits[previewOutfit-1]?.name}</div><button class="product-action" onclick="buyOrEquipOutfitV13(${previewOutfit})">${normalizedOutfit()===previewOutfit?'Tenue portée':owned.includes(previewOutfit)?'Porter cette tenue':previewOutfit===1?'Gratuit':coinIcon()+' '+OUTFIT_XP[previewOutfit-1]}</button></section><div class="outfit-list">${outfits.map((o,i)=>`<button class="outfit-choice ${previewOutfit===i+1?'on':''} ${owned.includes(i+1)?'owned':''} ${normalizedOutfit()===i+1?'equipped':''}" onclick="previewOutfit=${i+1};maybeSpeak('${o.name.replace(/'/g,"\\'")}');renderShop()"><div style="height:115px;display:flex;align-items:center;justify-content:center">${animImg(a.id,i,108,108)}</div><div class="product-name" style="min-height:0">${o.name}</div><div class="page-sub">${owned.includes(i+1)?(normalizedOutfit()===i+1?'Portée':'Possédée'):coinIcon()+' '+OUTFIT_XP[i]}</div></button>`).join('')}</div></div>`;
+}
+function showDiscover(view){discoverView=view;renderDisc();}
+function renderDisc(){
+  if(discoverView==='menu'){document.getElementById('pg-disc').innerHTML=`<div class="page-head"><div><div class="page-title">Activités</div><div class="page-sub">Choisis une rubrique.</div></div></div><div class="big-menu">
+    <button class="big-menu-card" onclick="showDiscover('offline')"><span class="big-menu-icon">🎨</span><span class="big-menu-title">Activités sans écran</span><div class="big-menu-sub">Créer, bouger et se détendre</div></button>
+    <button class="big-menu-card" onclick="showDiscover('youtube')"><span class="big-menu-icon">▶️</span><span class="big-menu-title">Chaînes YouTube</span><div class="big-menu-sub">Des vidéos recommandées</div></button>
+    <button class="big-menu-card" onclick="showDiscover('around')"><span class="big-menu-icon">📍</span><span class="big-menu-title">Autour de moi dans le 77</span><div class="big-menu-sub">Des idées de sorties en Seine-et-Marne</div></button></div>`;return;}
+  if(discoverView==='offline'){document.getElementById('pg-disc').innerHTML=`<button class="shop-back" onclick="showDiscover('menu')">← Retour</button><div class="page-title">Activités sans écran</div><div class="page-sub" style="margin-bottom:12px">Choisis une idée adaptée à ton envie.</div>${[
+    ['🎨','Coloriage et dessin','Créer avec des couleurs',"openSub('sp-coloring')"],['🏃','Jouer dehors','Bouger seul ou avec quelqu’un','openOutdoor()'],['🧩','Faire un puzzle','Avancer étape par étape',"openSub('sp-puzzle')"],['📚','Lire 15 minutes','Ajouter un livre à ta liste','openBooks()'],['🏗️','Construire','Lego, carton et autres idées','openBuild()'],['✨','Autres idées','Encore plus d’activités','openOffscreen()']
+  ].map(x=>`<div class="place-card" onclick="maybeSpeak('${x[1]}');${x[3]}"><div class="place-icon">${x[0]}</div><div><div class="place-name">${x[1]}</div><div class="place-desc">${x[2]}</div></div></div>`).join('')}`;return;}
+  if(discoverView==='youtube'){document.getElementById('pg-disc').innerHTML=`<button class="shop-back" onclick="showDiscover('menu')">← Retour</button><div class="page-title">Chaînes YouTube</div><div class="page-sub" style="margin-bottom:12px">Choisis un sujet. Demande l’accord d’un adulte avant d’ouvrir YouTube.</div><div class="youtube-categories">${YT_CATEGORIES.map(c=>`<button class="youtube-category" onclick="showDiscover('youtube-${c.id}')"><span class="youtube-category-icon">${c.i}</span><span class="youtube-category-title">${c.t}</span><span class="youtube-category-count">${c.items.length?c.items.length+' proposition'+(c.items.length>1?'s':''):'Bientôt disponible'}</span></button>`).join('')}</div>`;return;}
+  if(discoverView==='youtube-move'){document.getElementById('pg-disc').innerHTML=`<button class="shop-back" onclick="showDiscover('youtube-bienetre')">← Retour à Sport et bien-être</button><div class="page-title">Bouger</div><div class="page-sub" style="margin-bottom:12px">Choisis une vidéo et installe-toi dans un espace dégagé.</div>${YT_MOVE.map((v,i)=>`<a class="youtube-link" href="${v.u}" target="_blank" rel="noopener noreferrer" onclick="maybeSpeak('${v.t}')"><div class="place-card"><div class="place-icon">🏃</div><div><div class="place-name">${v.t}</div><div class="place-desc">${v.s}</div></div><div class="youtube-open">›</div></div></a>`).join('')}`;return;}
+  if(discoverView.indexOf('youtube-')===0){
+    const category=YT_CATEGORIES.find(c=>'youtube-'+c.id===discoverView);
+    if(category){document.getElementById('pg-disc').innerHTML=`<button class="shop-back" onclick="showDiscover('youtube')">← Retour aux sujets</button><div class="page-title">${category.i} ${category.t}</div><div class="page-sub" style="margin-bottom:12px">Appuie sur une chaîne pour l’ouvrir dans YouTube.</div>${category.items.length?category.items.map(v=>v.view?`<button class="place-card" style="width:100%;border:0;text-align:left;font-family:Nunito;color:var(--text)" onclick="showDiscover('youtube-${v.view}')"><div class="place-icon">🏃</div><div><div class="place-name">${v.t}</div><div class="place-desc">${v.s}</div></div><div class="youtube-open">›</div></button>`:`<a class="youtube-link" href="${v.u}" target="_blank" rel="noopener noreferrer" onclick="maybeSpeak('${v.t.replace(/'/g,"\\'")}')"><div class="place-card"><div class="place-icon">▶️</div><div><div class="place-name">${v.t}</div><div class="place-desc">${v.s}</div></div><div class="youtube-open">›</div></div></a>`).join(''):`<div class="youtube-empty"><strong>Les contenus Cuisine arrivent bientôt.</strong><br>Cette rubrique restera limitée à une sélection de chaînes adaptées.</div>`}`;return;}
+  }
+  document.getElementById('pg-disc').innerHTML=`<button class="shop-back" onclick="showDiscover('menu')">← Retour</button><div class="page-title">Autour de moi dans le 77</div><div class="page-sub" style="margin-bottom:12px">Des idées locales à préparer avec un adulte.</div>${DISCOVER_PLACES.map(p=>`<div class="place-card" onclick="maybeSpeak('${(p.n+'. '+p.d).replace(/'/g,"\\'")}')"><div class="place-icon">${p.i}</div><div style="flex:1"><div class="place-cat">${p.c}</div><div class="place-name">${p.n}</div><div class="place-desc">${p.d}</div></div><button class="speak-mini" onclick="event.stopPropagation();speak('${(p.n+'. '+p.d).replace(/'/g,"\\'")}',this)">🔊</button></div>`).join('')}`;
+}
+function getTips(){
+  const base=TIPS[S.age]||TIPS.ado;
+  return base.concat(EXTRA_TIPS).slice(0,10);
+}
+function renderTips(){
+  const tips=getTips(),tip=tips[S.tipIdx%tips.length],text=(tip.tg+'. '+tip.tx).replace(/'/g,"\\'");
+  document.getElementById('pg-tips').innerHTML=`<div class="page-head"><div><div class="page-title">Conseils</div><div class="page-sub">Dix petites idées pour t’aider.</div></div></div><div class="tip-c ${tip.c}" onclick="maybeSpeak('${text}')"><div style="display:flex;justify-content:space-between;align-items:center"><div class="tip-ico">${tip.i}</div><button class="speak-mini" onclick="event.stopPropagation();speak('${text}',this)">🔊</button></div><span class="tip-tg ${tip.c}">${tip.tg}</span><p class="tip-txt" style="margin-top:8px">${tip.tx}</p><div class="tipnav"><button class="tnb" onclick="event.stopPropagation();tipNav(-1)">← Précédent</button><span style="font-size:11px;color:var(--t2);font-weight:700">${(S.tipIdx%tips.length)+1}/${tips.length}</span><button class="tnb" onclick="event.stopPropagation();tipNav(1)">Suivant →</button></div></div>`;
+}
+function renderPrint(){
+  document.getElementById('pg-print').innerHTML=`<div class="page-head"><div><div class="page-title">À imprimer</div><div class="page-sub">Choisis une fiche. La fenêtre d'impression s'ouvrira ensuite.</div></div></div><div class="print-grid">
+    <button class="print-card" onclick="printSupport('planning')"><div class="print-icon">📅</div><div class="print-title">Planning semaine</div><div class="print-desc">Une grande semaine visuelle à compléter.</div></button>
+    <button class="print-card" onclick="printSupport('routine')"><div class="print-icon">✅</div><div class="print-title">Routine quotidienne</div><div class="print-desc">Matin, journée et soir.</div></button>
+    <button class="print-card" onclick="printSupport('emotions')"><div class="print-icon">😊</div><div class="print-title">Mes émotions</div><div class="print-desc">Une fiche pour montrer son humeur.</div></button>
+    <button class="print-card" onclick="printSupport('challenges')"><div class="print-icon">🏅</div><div class="print-title">Mes défis</div><div class="print-desc">Cinq défis à écrire et cocher.</div></button>
+    <button class="print-card" onclick="printSupport('activities')"><div class="print-icon">🎨</div><div class="print-title">Idées d'activités</div><div class="print-desc">Une liste d'activités sans écran.</div></button>
+    <button class="print-card" onclick="openSub('sp-coloring')"><div class="print-icon">🖍️</div><div class="print-title">Coloriages</div><div class="print-desc">Animaux, nature, véhicules et mandalas.</div></button>
+  </div>`;
+}
+function printSupport(type){
+  const sheet=document.getElementById('print-sheet');
+  const checks=items=>`<div class="print-checklist">${items.map(x=>`<div class="print-check">□ ${x}</div>`).join('')}</div>`;
+  if(type==='planning')sheet.innerHTML=`<h1>Mon planning de la semaine</h1><div class="print-week">${['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'].map(d=>`<div class="print-day"><strong>${d}</strong>${Array.from({length:8},()=>'<div class="print-line">□</div>').join('')}</div>`).join('')}</div>`;
+  if(type==='routine')sheet.innerHTML=`<h1>Ma routine quotidienne</h1><h2>Matin</h2>${checks(["Me lever","M'habiller","Me brosser les dents","Prendre mon petit-déjeuner","Préparer mon sac"])}<h2>Dans la journée</h2>${checks(["Boire de l'eau","Dire bonjour","Ranger une chose","Faire une pause"])}<h2>Soir</h2>${checks(["Préparer mes affaires","Me laver","Me brosser les dents","Préparer le coucher"])}`;
+  if(type==='emotions')sheet.innerHTML=`<h1>Comment je me sens ?</h1><div class="print-emotions">${[['😄','Très content'],['😊','Content'],['😐','Neutre'],['😴','Fatigué'],['😢','Triste'],['😠','En colère']].map(e=>`<div class="print-emotion">${e[0]}<span>${e[1]}</span></div>`).join('')}</div><h2>Ce qui peut m'aider :</h2>${checks(["Boire de l'eau","Faire une pause","Demander de l'aide","Sortir un peu","Respirer doucement","Parler à quelqu'un"])}`;
+  if(type==='challenges')sheet.innerHTML=`<h1>Mes 5 défis de la semaine</h1>${[1,2,3,4,5].map(i=>`<div class="print-check" style="margin-bottom:14px">□ Défi ${i} : __________________________________________</div>`).join('')}<h2>Ce dont je suis fier :</h2><div class="print-check" style="min-height:120px"></div>`;
+  if(type==='activities')sheet.innerHTML=`<h1>Mes activités sans écran</h1>${checks(["Dessiner ou colorier","Faire un puzzle","Lire un livre","Construire quelque chose","Jouer dehors","Écouter de la musique","Faire une promenade","Aider à préparer un repas","Jouer à un jeu de société","Inventer une histoire"])}`;
+  maybeSpeak('Fiche prête à imprimer');setTimeout(()=>window.print(),100);
+}
+
+// ==========================================================
+// SUB PAGES
+// ==========================================================
+function openSub(id){document.querySelectorAll('.sub-page').forEach(s=>s.classList.remove('open'));document.getElementById(id).classList.add('open');}
+function closeSub(id){document.getElementById(id).classList.remove('open');}
+
+// ==========================================================
+// TAB NAV
+// ==========================================================
+let curTab='home';
+function goTab(name){
+  const previous=curTab;
+  curTab=name;
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ti').forEach(t=>t.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  document.getElementById('ti-'+name).classList.add('on');
+  document.getElementById('scr').scrollTop=0;
+  if(name==='home')renderHome();
+  else if(name==='tasks')renderTasks();
+  else if(name==='ami')renderCompanion();
+  else if(name==='shop'){if(previous!=='shop')shopView='menu';renderShop();}
+  else if(name==='disc'){if(previous!=='disc')discoverView='menu';renderDisc();}
+  else if(name==='print')renderPrint();
+}
+
+function updateTabVisibility(){
+  const vt=document.getElementById('ti-voc');
+  if(vt)vt.style.display=S.age==='junior'?'':'none';
+  const ct=document.getElementById('ti-cards');
+  if(ct)ct.style.display=S.age==='junior'?'none':'';
+  const career=document.getElementById('ti-career');
+  if(career)career.style.display=S.age==='grand'?'':'none';
+  const newLogin=document.getElementById('new-login');
+  if(newLogin)newLogin.style.display=(S.age==='ado'||S.age==='grand')?'block':'none';
+}
+
+// Réinitialise uniquement le profil de cette application après confirmation.
+function newConnection(){
+  if(!confirm('Tout recommencer ? Le prénom, l’ami, les jetons et les progrès seront effacés.'))return;
+  try{localStorage.removeItem('auto_v13_accessible');}catch(e){}
+  location.reload();
+}
+
+// ==========================================================
+// INIT
+// ==========================================================
+function renderAll(){
+  updateTabVisibility();
+  if(!S.readerMode)S.readerMode='reader';
+  S.hasChangedAnimal=!!S.hasChangedAnimal;
+  S.weeklySelected=Array.isArray(S.weeklySelected)?S.weeklySelected:[];
+  S.weeklyDone=S.weeklyDone||{};
+  S.ownedOutfits=S.ownedOutfits||{};
+  S.ownedAnimalBgs=S.ownedAnimalBgs||{};
+  S.equippedAnimalBg=S.equippedAnimalBg||{};
+  if(S.animalId&&!S.ownedOutfits[S.animalId])S.ownedOutfits[S.animalId]=[1];
+  if(S.animalId&&!S.ownedAnimalBgs[S.animalId])S.ownedAnimalBgs[S.animalId]=[S.animalId+'-soft'];
+  S.equippedOutfit=normalizedOutfit();
+  S.ownedItems=Array.isArray(S.ownedItems)?S.ownedItems:[];
+  S.equippedItems=Array.isArray(S.equippedItems)?S.equippedItems.filter(id=>S.ownedItems.includes(id)).slice(0,5):[];
+  S.cardCollection=Array.isArray(S.cardCollection)?S.cardCollection:[0,2];
+  renderHome();renderTasks();renderCompanion();renderShop();renderDisc();renderPrint();
+}
+
+(function init(){
+  const saved=load();
+  checkDaily();
+  getDailyTasks();
+  if(saved&&S.name&&S.animalId){showScr('sc-app');renderAll();}
+  else if(saved&&S.name){showScr('sc-anim');renderAnimChoice();}
+})();
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('button');
+  if(!btn||S.readerMode!=='nonReader'||btn.matches('.speak-mini,.speak-btn,.voc-spk'))return;
+  const text=(btn.innerText||btn.getAttribute('aria-label')||'').trim();
+  if(text)setTimeout(()=>speak(text,null),20);
+});
+</script>
+</body>
+</html>
